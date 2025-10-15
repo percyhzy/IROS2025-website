@@ -1,0 +1,492 @@
+<!-- Template: https://github.com/nerfies/nerfies.github.io -->
+<!-- Author: LiuQi, contact: 17729920326 -->
+<!-- Latest update time: 2023/06/27 -->
+<!-- Way to find CSS using: view index.html in browser and press F12 -->
+
+<!DOCTYPE html>
+<html>
+<!-- web head -->
+<head>
+  <meta charset="utf-8">
+  <meta name="description"
+        content="CREPES: Cooperative RElative Pose Estimation System.">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CREPES: Cooperative RElative Pose Estimation System</title>
+
+<!-- 安装Bulma框架 -->
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+<!-- 自定义样式 -->
+  <link rel="stylesheet" href="./static/css/index.css">
+<!-- Icon库 -->
+  <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+
+
+
+
+</head>
+
+<!-- End web head -->
+<header style="position: fixed;top: 0; z-index: 1000;width: 100%">
+  <div style="position: absolute;right: 100px;top: 10px;">
+    <div class="container is-max-desktop">
+      <div class="columns">
+        <div class="clumn is-4 is-offset-8">
+          <button class="button is-light is-large">
+            <a href="./index.cn.html">CN</a>
+          </button>
+        </div>       
+      </div>
+    </div>
+  </div>  
+</header>
+
+
+<!--  web body  -->
+<body>
+<!-- 中英文切换 -->
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column has-text-centered">
+          <h1 class="title is-1 publication-title">CREPES: Cooperative RElative Pose Estimation System</h1>
+          <div class="is-size-5 publication-authors">
+            <!-- 作者连接缺失状态 -->
+            <span class="author-block">
+              <a>Zhiren Xun</a><sup>1,2</sup>,</span>
+            <span class="author-block">
+              <a>Jian Huang</a><sup>1,2</sup>,</span>
+            <span class="author-block">
+              <a>Zhehan Li</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a>Zhenjun Ying</a><sup>2</sup>,
+            </span>
+            <span class="author-block">
+              <a>Yingjian Wang</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a>Chao Xu</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a>Fei Gao</a><sup>1,2</sup>
+            </span>
+            <span class="author-block">
+              <a>Yanjun Cao</a><sup>1,2</sup>
+            </span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>Zhejiang University,</span>
+            <span class="author-block"><sup>2</sup>Huzhou Institute of Zhejiang University </span>
+          </div>
+          <!-- end author -->
+          <!-- Button -->
+          <div class="column has-text-centered">
+            <div class="publication-links">
+              <!-- PDF Link. -->
+              <span class="link-block">
+                <a href="https://arxiv.org/pdf/2302.01036.pdf"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fas fa-file-pdf"></i>
+                  </span>
+                  <span>Paper</span>
+                </a>
+              </span>
+              <!-- arxiv Link.  -->
+              <span class="link-block">
+                <a href="https://arxiv.org/abs/2302.01036"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="ai ai-arxiv"></i>
+                  </span>
+                  <span>arXiv</span>
+                </a>
+              </span>
+              <!-- Code Link. -->
+              <span class="link-block">
+                <a href="https://github.com/fast-fire-crepes/crepes_ws"
+                   class="external-link button is-normal is-rounded is-dark">
+                  <span class="icon">
+                      <i class="fab fa-github"></i>
+                  </span>
+                  <span>Code (coming soon)</span>
+                </a>
+              </span>
+            </div>
+          </div>
+          <!-- end Button -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- First Video -->
+<section class="teaser">
+  <div class="container">
+    <center>
+      <div class="columns is-centered">
+        <div class="column is-five-sixths">
+          <video id="teaser_video" width=40% muted autoplay loop style="border-radius:10px; ">
+            <source src="static/videos/manual control.mp4" type="video/mp4">
+          </video>
+          <video id="teaser_video" width=40% muted autoplay loop style="border-radius:10px; ">
+            <source src="static/videos/program comtrol.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </center>
+  </div>
+  <div class="container">
+    <center>
+      <div class="columns is-centered">
+        <div class="column is-five-sixths">
+          <video id="teaser_video" width=40% muted autoplay loop style="border-radius:10px; ">
+            <source src="static/videos/multi-robots.mp4" type="video/mp4">
+          </video>
+          <video id="teaser_video" width=40% muted autoplay loop style="border-radius:10px; ">
+              <source src="static/videos/long-distance.mp4" type="video/mp4">
+          </video>
+        </div>
+      </div>
+    </center>
+  </div>
+</section>
+
+<!-- abstract  -->
+<section class="section">
+  <div class="container">
+    <!-- Abstract. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-three-fifths">
+        <h2 class="title is-3">Abstract</h2>
+        <div class="content has-text-justified" >
+          <p>
+            Mutual localization plays a crucial role in multi-robot cooperation. CREPES, a novel system that focuses on
+            six degrees of freedom (DOF) relative pose estimation for
+            multi-robot systems, is proposed in this paper.
+          </p>
+          <p>
+            CREPES has
+            a compact hardware design using active infrared (IR) LEDs,
+            an IR fish-eye camera, an ultra-wideband (UWB) module and
+            an inertial measurement unit (IMU). By leveraging IR light
+            communication, the system solves data association between
+            visual detection and UWB ranging. Ranging measurements
+            from the UWB and directional information from the camera
+            offer relative 3-DOF position estimation. Combining the mutual
+            relative position with neighbors and the gravity constraints
+            provided by IMUs, we can estimate the 6-DOF relative pose
+            from a single frame of sensor measurements.
+          </p>
+          <p>
+            In addition, we
+            design an estimator based on the error-state Kalman filter
+            (ESKF) to enhance system accuracy and robustness. When
+            multiple neighbors are available, a Pose Graph Optimization
+            (PGO) algorithm is applied to further improve system accuracy.
+            We conduct enormous experiments to demonstrate CREPES’
+            accuracy between robot pairs and a team of robots, as well as
+            performance under challenging conditions.
+          </p>
+        </div>
+      </div>
+    </div>
+<!--/ Abstract. -->
+
+    <!-- Paper video. -->
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Video</h2>
+          <center>
+            <video width="75%" muted autoplay loop style="border-radius:10px; ">
+                <source src="static/videos/Crepes_video.mp4" type="video/mp4"></source>
+                <source src="static/videos/Crepes_video.ogg" type="video/ogg"></source>
+                your browser does not support the video tag
+            </video>
+          </center>
+      </div>
+    </div>
+    <!--/ Paper video. -->
+  </div>
+</section>
+
+<!-- System architecture  -->
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-three-fifths">
+        <h2 class="title is-3">Hardware design and software architecture of CREPES</h2>
+        <div class="content has-text-justified" >
+          <p>
+            The hardware consists of an IMU, an UWB, IR LEDs and a Camera.
+            The Raw Relative Pose Estimation software module collects neighbors’ ID (from ID Extraction), directional measurement (from Relative
+            Direction), distance (from UWB) and IMU information to get the raw estimation. Then an ESKF module filters the result using the IMU
+            information. When multiple neighbors are around, a PGO module is employed to further improve the performance.
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <div class="columns is-centered has-text-centered">
+      <img src="static/images/system.jpg" style="width: 75%;" alt="">
+    </div>
+  </div>
+</section>
+<!-- End System architecture-->
+
+
+<!-- Hardware iterations -->
+<section class="section">
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-three-fifths">
+        <h2 class="title is-3">Hardware system iterations</h2>
+        <div class="content has-text-justified" >
+          <p>
+            For more portable usage and less hardware output ports, the hardware of Crepes has been optimized for four iterations.
+            From Crepes1 to Crepes4, the final weight, volume and communication distance are listed as following.
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <img src="static/images/Hardware.jpg" style="width: 85%;" alt="">
+      </div>
+    </div>
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <img src="static/images/hardware_english.jpg" style="width: 60%;" alt="">
+      </div>
+    </div>
+  </div>
+</section>
+<!-- End Hardware iterations -->
+
+<!-- System error and applications -->
+<section class="section">
+  <!-- system error -->
+  <div class="container">
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-four-fifths">
+        <h2 class="title is-3">Crepes relative pose estimate in real world </h2>
+        <h3 class="title is-4">We use the NOKOV optical system as groundtruth</h3>
+        <div class="content has-text-justified " >
+          <center>
+            <video width="80%" muted autoplay loop style="border-radius:10px; ">
+              <source src="static/videos/error test.mp4" type="video/mp4"></source>
+              <source src="static/videos/error test.ogg" type="video/ogg"></source>
+              your browser does not support the video tag
+            </video>
+          </center>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- dynamic and static errors -->
+  <div class="container is-max-desktop">
+    <div class="columns is-centered">
+      <!-- static error -->
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Static Errors</h2>
+          <p>
+            Two robots mutual localization in a static situation. The distance is 2.5 m, 5 m and 10 m. 
+            The median distance error is under <b><font color="red">0.1 m</font></b>. 
+            The median orientation error is under<b><font color="red"> 0.4°</font> </b>.
+          </p>
+        </div>
+      </div>
+      <!-- dynamic error -->
+      <div class="column">
+        <div class="content">
+          <h2 class="title is-3">Dynamic Errors</h2>
+          <p>
+            Two robots mutual localization in a dynamic situation. The distance is within the range of 5 m to 10 m.
+            The median distance error is under <b><font color="red">0.1 m</font></b>. 
+            The median orientation error is under <b><font color="red">2°</font></b>.
+          </p>
+        </div>
+      </div>
+    </div>
+ 
+    <div class="columns is-centered">
+      <div class="column">
+        <img src="./static/images/static error.jpg" style="width: 100%;" alt="">
+
+      </div>
+      <div class="column">
+        <img src="./static/images/dynamic error.jpg" style="width: 100%;" alt="">
+      </div>     
+    </div>
+  <!-- End system errors -->
+    
+  <!-- Application. -->
+    <div class="columns is-centered">
+      <div class="column is-full-width">
+        <h2 class="title is-3">Applications</h2>
+        <!-- application1 -->
+        <h3 class="title is-4">Aggressive Motion</h3>
+        <div class="content has-text-justified">
+          <center>
+            <video width="100%" muted autoplay loop style="border-radius:10px; ">
+                <source src="static/videos/Big pose.mp4" type="video/mp4"></source>
+                <source src="static/videos/Big pose.ogg" type="video/ogg"></source>
+                your browser does not support the video tag
+            </video>
+          </center>
+        </div>
+        <!-- application2 -->
+        <h3 class="title is-4">Occlusion Scenario</h3>
+        <div class="content has-text-justified">
+          <p>
+            Position estimating in occlusion scenarios is a big challenge. 
+            We conduct experiments with five robots in two scenarios with different levels of occlusion. 
+            The following figure shows the groundtruth position and the remapped relative position of five robots.
+          </p>
+          <center>
+            <video width="95%" muted autoplay loop style="border-radius:10px; ">
+                <source src="static/videos/NLOS.mp4" type="video/mp4"></source>
+                <source src="static/videos/NLOS.ogg" type="video/ogg"></source>
+                your browser does not support the video tag
+            </video>
+          </center>
+        </div>
+        <!-- application3 -->
+        <h3 class="title is-4">Collaborate with the MPC controller</h3>
+        <div class="content has-text-justified">
+          <p>
+            The UGV is controlled arbitrarily using Crepes and MPC controller ,and the UAV follows a circle trajectory.
+          </p>
+          <center>
+            <video width="95%" muted autoplay loop style="border-radius:10px; ">
+                <source src="static/videos/MPC controller.mp4" type="video/mp4"></source>
+                <source src="static/videos/MPC controller.ogg" type="video/ogg"></source>
+                your browser does not support the video tag
+            </video>
+          </center>
+          <p>
+            Three drones are equipped with CREPES to 
+            obtain relative positioning and track around the vehicle.
+          </p>
+          <center>
+            <video width="95%" muted autoplay loop style="border-radius:10px; ">
+                <source src="static/videos/Coni-Swarm_720p.mp4" type="video/mp4"></source>
+                <source src="static/videos/Coni-Swarm_720p.ogg" type="video/ogg"></source>
+                您的浏览器不支持该视频格式
+            </video>
+          </center>
+        </div>
+        <!-- application4 -->
+        <h3 class="title is-4">ColAG: A Collaborative Air-Ground Framework for Perception-Limited UGVs' Navigation</h3>
+        <div class="content has-text-justified">
+          <p>
+            The drone is equipped with radar and CREPES devices, running the SLAM algorithm, 
+            serving as the leader of the system. 
+            The unmanned vehicle only carries the CREPES device to 
+            obtain relative position information and completes environmental exploration 
+            under the guidance of the drone.
+          </p>
+          <center>
+            <div class="column">
+              <img src="./static/images/ColAG.jpg" style="width: 100%;" alt="">
+            </div>
+          </center>
+        </div>
+      </div>
+    </div>
+  <!-- End application. -->
+
+  </div>
+</section>
+
+
+<section class="section" id="BibTeX">
+  <div class="container is-max-desktop content">
+    <h2 class="title">BibTeX</h2>
+    <pre>
+      <code>
+        @misc{xun2023crepes,
+        title={CREPES: Cooperative RElative Pose Estimation System}, 
+        author={Zhiren Xun and Jian Huang and Zhehan Li and Zhenjun Ying and Yingjian Wang and Chao Xu and Fei Gao and Yanjun Cao},
+        year={2023},
+        archivePrefix={IROS}
+        }
+      </code>
+    </pre>
+  </div>
+</section>
+
+<!-- endfooter -->
+<footer class="footer">
+  <div class="container">
+    <!-- href links -->
+    <div class="columns is-centered">
+      <div class="column is-5 has-text-centered">
+        <div class="content">
+          <a rel="license" href="http://zju-fast.com">
+            <img src="static/images/Fastlab.png" alt="">
+          </a>
+          <p></p>
+          <a rel="license" href="http://hzi.zju.edu.cn/">
+            <img src="static/images/Hizju.png" alt="">
+          </a>
+        </div>
+      </div>
+      <div class="column is-4 is-offset-1 has-text-centered">
+        <div class="columns is-centered is-mobile">
+          <div class="column">
+            <div class="content">
+              <a rel="license" href="http://pages.fast-fire.space">
+                <img src="static/images/qrcode_page.jpg" alt="">
+                <br>
+                <b>Related Projects</b>
+              </a>
+            </div>
+          </div>
+          <div class="column">
+            <div class="content">
+              <a rel="license" href="https://u.wechat.com/EFFxPvWiRRmMD9T_LvDgm0k">
+                <img src="static/images/qrcode_weixin.jpg" alt="">
+                <br>
+                <b>Contact via Wechat</b>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- contact -->
+    <div class="columns is-centered">
+      <div class="column has-background-link-light is-4">
+        <div class="content">
+          <h4>
+            Email:
+            <a rel="license" href="mailto:yanjunhi@zju.edu.cn">
+              yanjunhi@zju.edu.cn
+            </a>
+          </h4>
+        </div>
+      </div>
+      <div class="column has-background-link-light is-6">
+        <div class="content">
+          <h4>
+            Address:
+            <a rel="license" href="https://ditu.amap.com/place/B0G257WTA3">
+              Building B2, Huzhou Institute of Zhejiang University, No.819 Xisaishan Road, Wuxing District, Huzhou, Zhejiang Province
+            </a>
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<!--/ endfooter -->
+
+</body>
+</html>
