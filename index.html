@@ -172,10 +172,30 @@
         <h2 class="title is-3">Abstract</h2>
         <div class="content has-text-justified" >
           <p>
-            Terrain analysis is pivotal for safe mobile robot navigation in natural environments.
-            We present FSGP-BGK, a feature-based sparse Gaussian process (SGP) framework that extracts curvature and gradient cues from LiDAR point clouds and fuses them with historical traversability observations through a spatial-temporal Bayesian Gaussian kernel (BGK) update.
-            GPU-accelerated feature extraction, inducing-point SGP regression, and BGK smoothing jointly deliver dense, uncertainty-aware traversability maps in real time.
-            Extensive simulations across five terrain categories and field tests on a differential-drive platform demonstrate that FSGP-BGK achieves higher accuracy, lower variance, and lower latency than elevation-map baselines, enabling robust autonomous navigation in complex outdoor scenarios.
+             Terrain analysis is critical for the practical ap-
+plication of ground mobile robots in real-world tasks, espe-
+cially in outdoor unstructured environments. In this paper,
+we propose a novel spatial-temporal traversability assessment
+method, which aims to enable autonomous robots to effectively
+navigate through complex terrains. Our approach utilizes
+sparse Gaussian processes (SGP) to extract geometric features
+(curvature, gradient, elevation, etc.) directly from point cloud
+scans. These features are then used to construct a high-
+resolution local traversability map. Then, we design a spatial-
+temporal Bayesian Gaussian kernel (BGK) inference method to
+dynamically evaluate traversability scores, integrating historical
+and real-time data while considering factors such as slope,
+flatness, gradient, and uncertainty metrics. GPU acceleration is
+applied in the feature extraction step, and the system achieves
+real-time performance. Extensive simulation experiments across
+diverse terrain scenarios demonstrate that our method outper-
+forms SOTA approaches in both accuracy and computational
+efficiency. Additionally, we develop an autonomous navigation
+framework integrated with the traversability map and validate
+it with a differential driven vehicle in complex outdoor envi-
+ronments. Our code will be open-source for further research
+and development by the community,https://github.com
+/ZJU-FAST-Lab/FSGP_BGK.
           </p>
         </div>
       </div>
@@ -192,10 +212,23 @@
         <h2 class="title is-3">Highlights</h2>
         <div class="content has-text-left" >
           <ul>
-            <li>Feature-driven sparse Gaussian process regression uses inducing points to predict elevation, slope, curvature, and uncertainty from LiDAR scans.</li>
-            <li>Spatial-temporal BGK fusion incorporates historical traversability maps with decay-aware uncertainty weighting for stable, real-time updates.</li>
-            <li>Integrated navigation stack couples FSGP-BGK maps with A* search, MINCO trajectory optimization, and a differential-drive controller.</li>
-            <li>Validated in 2,500 simulated terrains and real-world uneven sites, reducing mean error by up to 52.5% and runtime by three times versus elevation maps.</li>
+            <li>We present an efficient, feature-driven SGP pipeline
+for traversability analysis. Our approach seamlessly
+integrates precise regression with robust uncertainty
+modeling, thereby enhancing performance in complex
+environments.</li>
+            <li>We introduce a novel spatial-temporal BGK inference
+framework to fuse historical observational data into the
+traversability map. This method significantly improves
+adaptability in changing environments.</li>
+            <li>We integrated the traversability assessment function
+into an autonomous navigation system and open-
+sourced the framework. The performance has been
+verified through simulation and real-world experiments
+in challenging scenarios. Our code will open to foster
+reproducibility and encourage further research within
+the community.</li>
+            
           </ul>
         </div>
       </div>
