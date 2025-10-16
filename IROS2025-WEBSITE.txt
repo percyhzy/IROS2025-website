@@ -1,0 +1,1057 @@
+Real-time Spatial-temporal Traversability Assessment via Feature-based
+Sparse Gaussian Process
+Zhenyu Hou1† , Senming Tan1† , Zhihao Zhang1† , Long Xu1,2 , Mengke Zhang1,2 , Zhaoqi He1 ,
+Chao Xu1,2 , Fei Gao1,2 , and Yanjun Cao1,2
+Abstract— Terrain analysis is critical for the practical application of ground mobile robots in real-world tasks, especially in outdoor unstructured environments. In this paper,
+we propose a novel spatial-temporal traversability assessment
+method, which aims to enable autonomous robots to effectively
+navigate through complex terrains. Our approach utilizes
+sparse Gaussian processes (SGP) to extract geometric features
+(curvature, gradient, elevation, etc.) directly from point cloud
+scans. These features are then used to construct a highresolution local traversability map. Then, we design a spatialtemporal Bayesian Gaussian kernel (BGK) inference method to
+dynamically evaluate traversability scores, integrating historical
+and real-time data while considering factors such as slope,
+flatness, gradient, and uncertainty metrics. GPU acceleration is
+applied in the feature extraction step, and the system achieves
+real-time performance. Extensive simulation experiments across
+diverse terrain scenarios demonstrate that our method outperforms SOTA approaches in both accuracy and computational
+efficiency. Additionally, we develop an autonomous navigation
+framework integrated with the traversability map and validate
+it with a differential driven vehicle in complex outdoor environments. Our code will be open-source for further research
+and development by the community,https://github.com
+/ZJU-FAST-Lab/FSGP_BGK.
+
+I. INTRODUCTION
+Autonomous mobile robots have become essential platforms for environmental perception and intelligent decisionmaking, revolutionizing operational paradigms in geological exploration, regional security, and ecological monitoring through their advanced terrain navigation capabilities
+[1]–[3]. Traversability estimation is crucial for autonomous
+navigation as it informs robots about hazardous regions,
+thereby reducing the risks associated with navigation [4]. In
+recent years, Gaussian process-based traversability analysis
+has gained significant attention [5], [6]. The Sparse Gaussian
+Process (SGP), an enhancement of the traditional Gaussian
+Process (GP), reduces the computational complexity of GP.
+Leveraging the continuity of SGP, this approach effectively
+models uneven terrain for local traversability map generation, facilitating efficient navigation and planning. However,
+SGP-based methods face two major limitations: Firstly, the
+accuracy of traversability assessment based on single-frame
+point clouds remains inadequate; Secondly, these methods
+This work was partially supported by the Central Guidance Fund Project for Local
+Science and Technology Development (Grant No. 2024ZY01015) and the Zhejiang Key
+Laboratory of Advanced Intelligent Warehousing and Logistics Equipment (Grant No.
+2024E10007). Corresponding author: Yanjun Cao, Chao Xu.
+†
+indicates equal contribution(co-first authors).
+1
+Huzhou Institute of Zhejiang University, Huzhou 313000, China; 2 State Key Laboratory of Industrial Control Technology, Zhejiang University, Hangzhou 310027, China.
+E-mails: xiagelearn@gmail.com, yanjunhi@zju.edu.cn
+
+(a)
+
+FSGP-BGK
+
+Elevation Map
+(b)
+
+Fig. 1: (a) Simulation results and the corresponding
+traversability map; (b) Real-world testing environment,
+where the yellow line indicates areas that are easy to traverse.
+fail to integrate historical observation data when evaluating
+terrain traversability, resulting in high CPU overhead and
+limited real-time performance due to the computational cost
+of direct data accumulation.
+To enhance the accuracy of Gaussian process-based
+traversability assessments, we propose a novel feature-based
+traversability mapping framework that leverages GPU acceleration for real-time processing. First, local curvature and
+gradient features are extracted from point cloud data, complemented by feature point extraction and voxel downsampling
+to create a sparse yet informative representation. Principal
+Component Analysis (PCA) is then applied to decorrelate
+these features, ensuring robust and efficient inputs for model
+training. During the mapping phase, the terrain features are
+reformulated as a GP regression problem, with an inducing
+point strategy integrated into the SGP framework. This
+integration significantly reduces computational complexity
+while preserving model fidelity, enabling accurate estimation
+of key parameters such as local curvature, gradient, and
+slope, thereby facilitating detailed traversability evaluation.
+Conventional SGP is unable to integrate historical observational data effectively, as merely accumulating past input
+data increases computational overhead and reduces processing speed. To address this limitation and better integrate
+historical observations, we adopt a Bayesian Gaussian Kernel
+(BGK) method. This approach merges historical data with
+preliminary traversability estimates. Additionally, Gaussian
+kernel filtering is applied for local smoothing, resulting in a
+high-precision, smooth, and robust traversability map. This
+
+Localization
+
+Feature
+Extraction
+projection pos
+
+Sparse
+Gaussian
+Processes
+
+curvature
+Controller
+
+gradient
+
+Point Cloud
+
+Tn-m
+
+BGK
+
+Tn
+
+Tn-2
+Tn-1
+
+Planner
+Traversability
+
+Spatial-temporal
+Information Fusion
+
+Fig. 2: Overview of the proposed terrain traversability mapping and navigation framework. From left to right, localization
+and LiDAR point cloud data are fed into the Feature Extraction module, where curvature and gradient features are computed
+for each point. These features are then processed by a Sparse Gaussian Process (SGP) model with induced points, yielding
+local height predictions, variance, and gradient information. Next, a spatial-temporal Bayesian Gaussian Kernel (BGK) fusion
+step integrates these predictions with historical maps to produce a refined traversability cost map. Finally, we employ A*
+for trajectory search, MINCO [7] for trajectory optimization, and a controller for trajectory tracking, thereby generating the
+necessary control commands for the autonomous vehicle to navigate uneven terrain safely and efficiently.
+method effectively resolves the issue of integrating historical
+data with SGP, while significantly enhancing the system’s
+adaptability and robustness in dynamic environments.
+In summary, our main contributions are summarized as
+follows:
+1) We present an efficient, feature-driven SGP pipeline
+for traversability analysis. Our approach seamlessly
+integrates precise regression with robust uncertainty
+modeling, thereby enhancing performance in complex
+environments.
+2) We introduce a novel spatial-temporal BGK inference
+framework to fuse historical observational data into the
+traversability map. This method significantly improves
+adaptability in changing environments.
+3) We integrated the traversability assessment function
+into an autonomous navigation system and opensourced the framework. The performance has been
+verified through simulation and real-world experiments
+in challenging scenarios. Our code will open to foster
+reproducibility and encourage further research within
+the community.
+II. RELATED WORK
+A. LiDAR-Based Traversability Assessment
+Recently, there has been an increasing amount of research
+focused on LiDAR-based traversability map evaluation. In
+these studies, point cloud data are processed to generate
+detailed local terrain maps that capture key geometric descriptors such as elevation, curvature, and slope [8]–[16].
+Classical methods [17], [18] extract these features from
+LiDAR and integrate them with statistical models to construct local and global terrain representations. Although some
+works [12], [8] extend this approach by incorporating the full
+state of the SE(3) of the robot or even its suspension dynamics [16] to improve the fidelity of terrain assessment, such
+
+a comprehensive modeling typically imposes a significant
+computational burden. Consequently, several studies [10],
+[11], [12], [13] opt to simplify the problem by restricting
+the analysis to R2 space, a compromise that can undermine
+the accuracy of the risk estimation of traversability. Recent
+advances in deep learning have prompted the development
+of self-supervised and end-to-end learning approaches for
+traversability estimation. J. Seo et al. [19] proposed a selfsupervised framework that takes advantage of vehicle-terrain
+interaction data to infer traversability directly, thus reducing
+reliance on manual annotations. Despite their promise, these
+approaches still face challenges in achieving robust feature
+extraction in dynamic environments as well as in effectively
+incorporating historical observational data to maintain global
+spatial-temporal consistency.
+B. Gaussian Process-Based Traversability Assessment
+The GP framework has long been recognized for its effectiveness in modeling continuous spatial phenomena [18],
+[20], [21]. To alleviate the computational burden associated with standard GP, SGP methods have been developed,
+utilizing Bayesian principles to efficiently approximate the
+full posterior distribution [22]–[24]. In recent years, several
+works have applied this technique to terrain assessment, aiming to generate smoother and more continuous traversability
+maps compared to classical elevation maps (EM) [11], as
+shown in the Fig. 1. Among the pioneering contributions
+to uneven terrain traversability analysis, A. Leininger et al.
+[25] proposed a SGP-based approach that integrates height,
+uncertainty, and slope information to enhance path planning.
+Furthermore, Xue et al. [26] achieved robust terrain modeling
+and high-precision traversability analysis by fusing multiframe LiDAR data, Normal Distributions Transform (NDT)
+mapping, and spatial-temporal BGK inference. However,
+these approaches primarily rely on local information, failing
+
+to fully utilize historical observation data. This limitation
+leads to reduced accuracy and poor performance in dynamic
+environments.
+
+(a) point cloud
+
+(b.1) slope
+
+(b.2) curvature
+
+(b.3) gradient
+
+(b.4) uncertainty
+
+(c) traversability
+
+Fig. 3: Feature-based SGP results in an uneven environment.
+From left to right: We begin with the point cloud of the
+uneven terrain and extract SGP inducing feature points. The
+SGP then predicts local slope, curvature, gradient, and uncertainty layers, which are finally integrated into a traversability
+map.
+III. T RAVERSABILITY A SSESSMENT F RAMEWORK
+In this section, we introduce a novel approach for constructing terrain traversability maps by integrating a terrainfeature-based SGP regression model with a spatial-temporal
+BGK inference algorithm. GPU acceleration is used to extract position, curvature, and gradient features from pointcloud data, which together form the training set for the SGP
+model. Meanwhile, an inverse distance weighted interpolation is used to generate a testing set that captures the surrounding terrain’s geometric structure. The traversability map
+is then estimated by fusing the local gradient predicted by
+the SGP with the local curvature and gradient derived from
+the testing set. Subsequently, historical map data and the
+SGP’s spatial variance are utilized to refine the map, thereby
+enhancing accuracy and adaptability. Detailed explanations
+of each module are provided in the following subsections.
+A. Terrain Feature Extraction
+To effectively utilize point cloud data for sparse terrain
+representation, we extract curvature and gradient features
+from a point cloud that is aligned with the horizontal axis
+of the world coordinate system. Let P denote the original
+point cloud, where each point pi ∈ P is represented
+as pi = (xi , yi , zi ), with (xi , yi , zi ) denoting its threedimensional spatial coordinates. For each point pi , the local
+neighborhood Ni is determined using the k-nearest neighbors
+(KNN) algorithm, which selects the k closest points based
+on Euclidean distance.
+1) Curvature Computation: The local curvature
+P is estimated by first computing the centroid µi = k1 pj ∈Ni pj
+and the covariance matrix:
+X
+1
+Ci =
+(pj − µi )(pj − µi )⊤ .
+(1)
+k−1
+pj ∈Ni
+P
+The curvature is then defined as κi = λmin /( j λj + ϵ),
+where λmin is the smallest eigenvalue of Ci , and ϵ is a small
+constant to prevent division by zero.
+
+2) Gradient Computation: The local gradient
+P quantifies
+elevation variation and is given by gi = k1 pj ∈Ni |zj −
+zi |, where zj and zi are the elevation values of pj and pi ,
+respectively.
+3) Feature Point Identification: Feature points are identified using predefined curvature and gradient thresholds τκ
+and τg . A point is classified as a feature point if κi > τκ or
+gi > τg , forming the feature set F = {pi | κi > τκ or gi >
+τg }. To reduce redundancy, uniform downsampling is applied
+to P − F by partitioning the space into voxel grids of size
+v, retaining one point per voxel to form the downsampled
+set D.
+4) Final Point Cloud Assembly: The final point cloud
+dataset is given by Pfinal = F ∪ D. If the total number of
+retained points exceeds a threshold M , a random sampling
+strategy is applied:
+Pfinal = {(xi , yi , zi , κi , gi )}M
+i=1 = RandomSample(F∪D, M ).
+(2)
+5) Feature Decorrelation and Acceleration: After extraction, PCA reduces redundancy by projecting data onto
+the principal axes of maximal variance, improving model
+efficiency and stability. Feature points with high curvature or
+large gradients—indicative of critical terrain structures such
+as ridges, valleys, and cliffs—are prioritized. GPU acceleration is employed for KNN search, covariance computation,
+eigenvalue decomposition, and PCA, significantly improving
+computational efficiency.
+B. Terrain Feature SGP Model
+We employ a SGP model for terrain representation. An
+inducing point set Z, corresponding to Pfinal , is introduced
+for computational efficiency. The training set is defined
+as Dtrain = {(Xi , zi )}, where Xi = (xi , yi , κi , gi ) are
+decorrelated features, and zi is the terrain elevation. We
+assume a GP prior:
+
+f (X) ∼ GP m(X), k(X, X′ ) ,
+(3)
+where m(X) is the mean and k(X, X′ ) is the kernel function.
+To construct Dtest , we generate test points G by partitioning
+the space into a uniform grid. For each X∗ = (x∗ , y ∗ ), the K
+nearest neighbors are identified via KNN. The local curvature
+and gradient are interpolated by
+κ∗ =
+
+K
+X
+
+wk κk ,
+
+g∗ =
+
+k=1
+
+wk =
+
+1
+,
+dk + ϵ
+
+K
+X
+
+wk gk ,
+
+(4)
+
+k=1
+K
+X
+
+wk = 1,
+
+(5)
+
+k=1
+
+yielding X∗ = (x∗ , y ∗ , κ∗ , g ∗ ), which is then fed into the
+trained GP model to predict elevation.
+For the test set X∗ , the predictive mean and variance are
+computed as
+f ∗ = K∗M K−1
+M M zM ,
+
+(6)
+
+σ∗2 = k∗∗ − K∗M K−1
+M M KM ∗ ,
+
+(7)
+
+where K∗M and KM M are kernel matrices between test and
+inducing points, and zM contains target values associated
+with Z. This approximation reduces computational complexity while maintaining high accuracy.
+C. Traversability Map Construction
+We construct a traversability cost map, Mτ , by leveraging
+local features predicted by our SGP and BGK inference
+methods. First, we compute preliminary traversability estimates from curvature, gradient, and slope information derived from the SGP. We then refine these estimates by fusing
+historical data via the BGK method and subsequently apply
+Gaussian kernel filtering to ensure spatial coherence.
+For each test point X∗ = (x, y, κ∗ , g ∗ ), where κ∗ and
+∗
+g denote the curvature and local height gradient predicted
+by the SGP, and |∇f∗ | represents the slope magnitude, we
+compute a preliminary traversability score as
+Mτ,pre = wκ κ∗ + wg g ∗ + wgrad ∇f∗ ,
+
+(8)
+
+where the weights satisfy wκ + wg + wgrad = 1. These
+weights can be tuned experimentally or learned from data
+to suit specific application needs.
+To improve spatial-temporal consistency, we fuse the
+preliminary estimates with historical observations stored for
+each grid cell (x, y). Each cell maintains its prior traversabil2
+ity estimate Mτ,t−1 , variance στ,t−1
+, and timestamp t0. We
+define a temporal decay weight ωt = exp −λ(t − t0 ) and
+2
+an uncertainty-based confidence weight ωσ = 1/(στ,t−1
++ϵ).
+The BGK fusion update is
+ωt ωσ Mτ,t−1 + Mτ,pre
+,
+ωt ωσ + 1
+with the corresponding variance updated as
+Mτ =
+
+(9)
+
+2
+2
+ωt στ,t−1
++ σpre
+.
+(10)
+ωt + 1
+Finally, to reduce local discontinuities, we smooth Mτ
+via Gaussian filtering. For each grid cell Xi , the smoothed
+traversability is computed as
+X
+Mτ,smooth =
+k(Xi , Xj ) Mτ,j ,
+(11)
+2
+στ,t
+=
+
+j∈N (i)
+
+where the Gaussian kernel
+ is defined by k(Xi , Xj ) =
+exp −∥Xi − Xj ∥2 /(2 σ 2 ) . The complete algorithmic is
+outlined in Algorithm 1.
+As shown in Algorithm 1, the traversability smoothing
+procedure accepts test points X∗ , predicted values f ∗ (derived from curvature and gradient), and uncertainties σ∗2 as
+inputs to produce a smoothed traversability map Mτ,smooth .
+The algorithm initializes a preliminary traversability map,
+leverages a sliding window to maintain historical traversability and uncertainty data, and applies spatial smoothing by
+adjusting values based on adjacent points points. The refined traversability map is subsequently extracted from the
+sliding window, encapsulating an enhanced representation of
+terrain navigability. This approach yields a high-precision,
+spatial-temporally consistent traversability map that robustly
+supports autonomous navigation and path planning.
+
+Algorithm 1 Traversability Map Algorithm
+1:
+2:
+3:
+4:
+5:
+6:
+7:
+8:
+9:
+10:
+11:
+12:
+13:
+14:
+15:
+16:
+17:
+
+Input: X∗ , f ∗ , σ∗2
+Output: Mτ,smooth
+Mτ,pre ← initializeTraversability(X∗ , f ∗ , σ∗2 )
+mapHistoryBuffer ← addValue(Mτ,pre , X∗ , σ∗2 )
+for each Mτ,i in mapHistoryBuffer do
+Mτ,i ← updateTraversabilityHistory(Mτ,pre )
+end for
+2
+for each στ,i
+in mapHistoryBuffer do
+2
+στ,i ← updateUncertaintyHistory(σ∗2 )
+end for
+for each Xi in mapHistoryBuffer do
+N (i) ← computeNeighboringPoints(X
+i)
+
+for each Xj , Mτ,j in N (i) do
+Mτ,j ← smoothData(Xi , Xj , Mτ,j )
+end for
+end for
+Mτ,smooth ← getLatestTraversability(mapHistoryBuffer)
+
+D. System Framework and Implementation
+As illustrated in Fig. 2, our terrain traversability mapping
+and navigation framework comprises four main components:
+localization, mapping, planning, and control. We use a
+LiDAR-based approach to estimate the robot’s SE(3) pose,
+while simultaneously feeding raw point cloud data into
+a feature extraction module that computes curvature and
+gradient information. These features are then processed by
+a SGP to predict local terrain attributes, and the resulting
+predictions are fused with historical observations via a BGK
+method to produce the traversability map.As Fig. 4 shown,the
+entire process is accelerated using a GPU.
+To validate our framework, we employ A* for global
+path planning and use MINCO [6] and DDR-opt [27] for
+trajectory optimization and smoothing based on the generated
+traversability map. Model predictive control (MPC) is then
+applied for real-time trajectory tracking. We deploy this
+system on a physical robot, updating the traversability map
+online and enabling robust, autonomous navigation over
+uneven terrain in both simulation and real-world experiments.
+CPU
+
+Point Cloud
+Robot SE(3)
+Publish
+Traversability map
+
+GPU
+Feature Extraction
+
+Sparse Gaussian Process
+
+Clearing grids as
+robot moves
+
+Bayesian Gaussian Kernel
+
+Traversability assessment
+Traversability map
+
+Copy between
+CPU and GPU
+Processing step
+
+Fig. 4: The process of operations on the CPU and GPU
+during traversability map generation.
+
+IV. E XPERIMENTAL E VALUATION
+To comprehensively evaluate the proposed FSGP-BGK
+method, we conducted a series of experiments comprising both quantitative assessments and real-world tests. The
+quantitative evaluation benchmarks FSGP-BGK against wellestablished methods, such as SGP based terrain assessment
+pipeline [25] and elevation map (EM) [11], across various terrain types and different inducing point numbers.
+Meanwhile, we validated the applicability of the method
+on physical robotic platforms, with a focus on real-time
+mapping performance and collision avoidance.
+A. Data Sample and Simulation Setup
+1) Terrain Generation and Data Sample: To rigorously
+evaluate the performance of the proposed method across a
+range of challenging scenarios, we utilized the EPFL terrain
+generator1 to synthesize large-scale terrain point clouds.
+These terrains span a 50 m × 50 m area and encompass four
+distinct types: In our experiments, we simulated five types
+of terrain: Hilly Terrain, an environment characterized by
+small hills and open stretches generated using the Procedural
+Terrain Generator; Forest Terrain, created by overlaying
+randomly distributed, unstructured trees of various sizes on
+the hilly landscape; Ruin Terrain, enhanced by adding both
+unstructured trees and structured rectangular and cylindrical
+objects atop the hilly terrain; Urban Terrain, constructed by
+segmenting the Complex Urban Dataset [28] into square sections to mimic realistic urban on-road settings; and an Indoor
+Scene, built using the SceneNet dataset2 and segmented into
+predefined sections to simulate realistic indoor environments.
+
+(Urban)
+(Ruin)
+Fig. 5: Left: Urban
+Terrain; Right: Ruin Terrain.
+Other terrain
+types are discussed later.
+
+For each terrain type, we generate 500 scenarios with different point clouds, yielding a total of 2500 samples. These
+point clouds are processed using a specified formula (denoted
+as [x]) to create ground truth traversability maps. These
+maps are then used to guide A* path planning, followed
+by trajectory optimization using the MINCO algorithm [6],
+simulating robotic navigation tasks.
+2) Simulation Configuration: In our simulations, the robot
+navigates each terrain type with 15% of the point cloud data
+intentionally occluded, thereby mimicking real-world LiDAR
+limitations such as shadowed regions or sparse sensor scans.
+1 https://github.com/droduit/procedural-terrain-g
+eneration
+2 https://bitbucket.org/robotvault/downloadscenene
+t/src/master/
+
+The acquired point clouds are processed sequentially and fed
+into the models at fixed intervals. Traversability estimates are
+then evaluated by computing the mean error and variance
+relative to the ground truth—that is, the average difference
+between the generated traversability map and the ground
+truth global map. Note that both the mean error and variance
+are dimensionless and range from 0 to 1, as they represent
+the traversability scores.
+To ensure a fair comparison with EM [10], we exclude the
+gap regions caused by occlusions and focus solely on areas
+with available data. All simulations are run on a dedicated
+workstation equipped with an Intel i5-12400F CPU, 16
+GB of RAM, and an NVIDIA RTX 4060 GPU, ensuring
+consistency in computational conditions across all trials.
+3) Comparative Baselines: We benchmark FSGP-BGK
+against the following methods:
+• SGP: A classical SGP based traversability analysis for
+terrain mapless navigation [25].
+• FSGP: A feature-based SGP approach proposed in this
+study, which does not incorporate BGK..
+• EM: A widely adopted grid-based spatial representation
+method [11], valued for simplicity but prone to gaps in
+unobservable regions.
+B. Quantitative Assessment
+1) Performance across Diverse Terrains: As illustrated
+in Figs. 6, we randomly select a point cloud from both an
+outdoor forest environment and an indoor room environment.
+We then apply three methods, SGP (baseline), FSGP and
+FSGP-BGK to generate traversability estimates for each
+trajectory point in chronological order. The mean error and
+variance, computed relative to the ground truth, are plotted
+over time in Fig. 6.
+Our experimental results demonstrate that in the outdoor
+forest scenario with 125 inducing points, FSGP-BGK improves mean accuracy by 18% to 20% compared to the
+baseline SGP and exhibits significantly lower error variance. In the indoor environment, FSGP-BGK outperforms
+SGP by up to 46% to 48% on average while maintaining
+superior stability. Moreover, in both scenarios the mean
+error steadily decreases over time, highlighting the enhanced
+terrain estimation accuracy achieved through the integration
+of historical observations.
+2) Algorithmic Scalability in Large-Scale Testing: To
+assess the robustness and scalability of our approach, we
+conducted experiments on 2500 terrain point clouds across
+five categories: Hilly, Forest, Ruin, Road, and Indoor. Table I
+reports the average mean error and variance for each method
+(lower values indicate better performance, with the best
+results highlighted in blue). The Indoor dataset and the
+Road dataset are consistent with those used earlier, while
+the Hilly, Forest, and Ruin terrains were generated using the
+EPFL terrain generator. Our FSGP-BGK method consistently
+achieves the lowest mean error and variance, outperforming
+both the baseline SGP and the intermediate FSGP variant.
+For example, in the Hilly environment, FSGP-BGK reduces the mean error from 0.2604 (SGP) to 0.1237 and
+
+TABLE I: Experimental Results Across Different Terrains.
+
+50
+Time Stamp
+(c)
+
+SGP
+FSGP
+FSGP-BGK
+
+100
+
+0
+
+50
+Time Stamp
+(d)
+
+100
+
+Fig. 6: (a) Forest scene point cloud rendered using the EPFL
+terrain generator; (b) Indoor scene point cloud extracted from
+an open-source dataset4 (c) and (d) illustrate the temporal
+evolution of the mean error and variance.
+the variance from 0.0392 to 0.0085, corresponding to improvements of approximately 52.5% and 78.3%, respectively.
+Similar gains are observed in the Forest and Ruin terrains,
+where our method not only lowers error but also stabilizes
+uncertainty estimates. In the Indoor scenario, although FSGP
+alone yields a slightly higher mean error than SGP (0.2537
+vs. 0.2455), incorporating BGK reduces it significantly to
+0.1978.
+These findings underscore two principal insights. First,
+accurate traversability prediction fundamentally relies on
+extracting high-density terrain features—such as curvature
+and gradient—which serve as precise proxies for underlying
+navigability. Second, by integrating historical observations
+through our spatial-temporal BGK framework, the method
+effectively captures temporal dynamics and progressively
+reduces prediction errors. This dual strategy not only outperforms conventional SGP approaches but also deepens
+our understanding of the critical determinants of terrain
+traversability.
+3) Impact of Inducing Points: As illustrated in Figs. 7(ab), we generate an uneven Hilly terrain and employ our
+method to construct the corresponding global point cloud.
+We then investigate the influence of Inducing points by
+evaluating SGP, FSGP, and FSGP-BGK with both 50 and
+500 inducing points, as shown in Figs. 7(c-d). When only
+50 inducing points are used, FSGP-BGK outperforms the
+baseline SGP by up to 19% in mean accuracy. Although
+FSGP also surpasses SGP—benefiting from richer feature
+fusion—it eventually saturates over prolonged operation. In
+contrast, FSGP-BGK retains its advantage over time, owing
+to the integration of historical observations via BGK, thereby
+yielding more robust and stable traversability estimates.
+As the number of inducing points increases to 500, the
+performance gap between SGP and FSGP narrows, since the
+larger input feature space compensates for SGP’s simpler
+
+Average Mean
+
+Average Variance
+
+Hilly
+
+SGP
+FSGP
+FSGP-BGK
+
+0.2604
+0.2321
+0.1237
+
+0.0392
+0.0345
+0.0085
+
+Forest
+
+SGP
+FSGP
+FSGP-BGK
+
+0.1831
+0.1777
+0.1687
+
+0.0245
+0.0227
+0.0213
+
+Ruin
+
+SGP
+FSGP
+FSGP-BGK
+
+0.2003
+0.1965
+0.1831
+
+0.0239
+0.0219
+0.0206
+
+Road
+
+SGP
+FSGP
+FSGP-BGK
+
+0.1694
+0.1434
+0.1051
+
+0.0373
+0.0328
+0.0240
+
+Indoor
+
+SGP
+FSGP
+FSGP-BGK
+
+0.2455
+0.2537
+0.1978
+
+0.0451
+0.0429
+0.0420
+
+modeling. Nonetheless, FSGP-BGK still achieves about a
+12% improvement in mean accuracy compared to both baselines. This finding indicates that even with abundant inducing
+points, the BGK-based historical data fusion remains critical
+to preserving higher accuracy and stability, especially over
+extended trajectories.
+
+(a)
+Mean & Var/2
+
+0
+
+0.50
+0.45
+0.40
+0.35
+0.30
+0.25
+0.20
+0.15
+0.10
+
+Mean & Var/2
+
+SGP
+FSGP
+FSGP-BGK
+
+Mean & Var/2
+
+0.26
+0.24
+0.22
+0.20
+0.18
+0.16
+0.14
+
+(b)
+
+Method
+
+0.30
+0.28
+0.26
+0.24
+0.22
+0.20
+0.18
+0.16
+
+(b)
+SGP
+FSGP
+FSGP-BGK
+
+0
+
+50
+Time Stamp
+(c)
+
+100
+
+Mean & Var/2
+
+(a)
+
+Type
+
+0.26
+0.24
+0.22
+0.20
+0.18
+0.16
+0.14
+
+SGP
+FSGP
+FSGP-BGK
+
+0
+
+50
+Time Stamp
+(d)
+
+100
+
+Fig. 7: (a) Uneven Hilly terrain generated by EPFL terrain generator; (b) Global point cloud extracted from the
+Hilly terrain; (c) Temporal evolution of the mean error and
+variance for SGP, FSGP, and FSGP-BGK with 50 inducing
+points relative to the ground truth; (d) Temporal evolution
+of the mean error and variance for the same methods with
+500 inducing points. This figure visually demonstrates the
+differences in modeling accuracy and stability among the
+methods under varying numbers of inducing points.
+4) Comparison with Elevation Map: We further validate
+our approach by comparing FSGP-BGK with the EM [11]
+method under identical conditions to those used for the
+baseline SGP. In this experiment, occlusion-induced gaps
+are excluded so that only observable regions are evaluated.
+Table II reports the absolute differences in mean error and
+variance relative to the ground truth, along with the average
+
+runtime measured on the same hardware.
+FSGP-BGK achieves a mean error of 0.1139 and a variance of 0.0333, compared to 0.1953 and 0.0422 for EM [11],
+respectively. Moreover, its average runtime is only 33.84ms
+versus 107.85ms for EM [11]. These improvements can be
+attributed to the spatio-temporal continuity enforced by our
+BGK fusion and the efficient, feature-driven SGP framework.
+In contrast, the standard interpolation used in elevation maps
+yields coarser traversability estimates with higher variance
+and increased computational overhead. Consequently, FSGPBGK produces a smoother, more accurate, and real-time
+traversability map that is well-suited for autonomous navigation.
+
+Platform
+Livox MID-360
+Battery
+NUC11PHKi7C
+Agilex Scout Mini
+Real-world
+
+TABLE II: Comparison of FSGP-BGK and EM Methods.
+Method
+
+Mean
+
+Variance
+
+Avg. Runtime (ms)
+
+FSGP-BGK
+EM
+
+0.1139
+0.1953
+
+0.0333
+0.0422
+
+33.84
+107.85
+
+5) Comparison of Historical Observational Data Fusion:
+To demonstrate the superiority of our BGK-based approach
+within the FSGP framework, we conducted experiments
+comparing the direct accumulation of multi-frame point
+cloud data with our proposed BGK post-processing method.
+Under identical hardware conditions and in the same uneven terrain environment, we evaluated both approaches in
+terms of memory usage, GPU memory consumption, and
+processing time, as detailed in Table III. Our results indicate
+that while both methods exhibit comparable system memory
+usage (9.4%), the BGK-based method substantially reduces
+GPU memory consumption (25% versus 36%) and processing time (29.16 ms versus 42.37 ms). These improvements
+are attributed to the effective integration of historical data
+via our BGK framework, which not only maintains high estimation accuracy but also significantly lowers computational
+overhead, thereby enhancing real-time performance.
+
+Fig. 8: The physical platform used in our experiments
+(Agilex Scout Mini) is equipped with a DJI Livox MID360 LiDAR. Two batteries are installed to power both the
+LiDAR and the NUC11PHKi7C. The figure also shows the
+real uneven terrain employed for our field experiments.
+on a physical robot. Fig. 9 shows a smooth, continuous
+trajectory generated in Isaac Sim based on the traversability
+map produced by FSGP-BGK.
+
+TABLE III: Resource Usage and Performance Comparison
+
+Memory Usage (%)
+GPU Memory Usage (%)
+Processing Time (ms)
+
+FSGP-BGK
+
+FSGP-Accumulation
+
+9.4
+25
+29.16
+
+9.4
+36
+42.37
+
+C. Real-World Tests
+We deploy both FSGP-BGK and SGP on a differentialwheeled robot (as shown in Fig. 8), which is equipped with
+an 11th Gen Intel® Core™ i7 CPU, an NVIDIA® RTX
+2060 GPU, and a LiDAR sensor. As illustrated in Fig. 8,
+this configuration enables real-time scanning and mapping
+of the surrounding environment, providing a robust testbed
+to evaluate the qualitative performance of our proposed
+approach.
+a) Autonomous Navigation: We conducted real-world
+navigation experiments on uneven terrain, as shown in Fig. 8,
+to verify the practical applicability of our traversability map
+
+Fig. 9: Smooth and continuous trajectory generation based
+on traversability maps in the Isaac Sim
+b) Real-World Map Perception Evaluation: We further
+evaluate map perception in a real-world environment characterized by significantly undulating terrain, as shown in
+Fig. 10(a). FAST-LIO2 is employed to obtain high-fidelity
+point clouds and provide accurate localization, revealing
+small-scale obstacles in the scene (Fig. 10(b)). When the
+baseline SGP is run on the same hardware with identical
+induced points, resolution, and control pipelines, its resulting
+traversability map fails to capture these detailed information.
+In contrast, our FSGP-BGK algorithm, operating under the
+same conditions, accurately identifies these small obstacles
+at a frequency of 20 Hz (Fig. 10(c)). Moreover, FSGP-BGK
+maintains a significantly lower computational overhead compared to SGP, thereby confirming its advantage in real-time
+perception and planning for challenging outdoor navigation
+tasks.
+
+(a) real scenarios
+
+(b) point cloud
+Robot SE(3)
+Warning board
+Slope
+Traversability Intensity
+
+(c) SGP vs FSGP-BGK
+
+0.0 0.2 0.4 0.6 0.8 1.0
+(d) Explanation
+
+Fig. 10: (a) Real-world uneven terrain (with small obstacles);
+(b) Scene obtained from point cloud extraction; (c) Comparison of traversability maps; (d) Traversability range from 0
+to 1 (lower values indicate higher traversability).
+V. C ONCLUSION
+In this paper, we presented a global-map-free navigation
+framework that leverages a feature-based sparse Gaussian
+process to extract key geometric features from LiDAR point
+clouds. By integrating GPU-accelerated feature extraction
+with spatial-temporal Bayesian Gaussian Kernel inference,
+our method fuses real-time measurements with historical
+data to dynamically assess traversability in terms of slope,
+flatness, gradient, and uncertainty. Both simulation and realworld experiments confirm that the proposed approach significantly enhances estimation accuracy and computational
+efficiency compared to conventional methods, making it a
+robust solution for autonomous navigation in complex terrain.For future work, we will extend our approach to globalmap-free autonomous exploration for multi-robot systems
+using GP and BGK.
+R EFERENCES
+[1] P. Papadakis, “Terrain traversability analysis methods for unmanned
+ground vehicles: A survey,” Engineering Applications of Artificial
+Intelligence, vol. 26, no. 4, pp. 1373–1385, 2013.
+[2] H. Mousazadeh, “A technical review on navigation systems of agricultural autonomous off-road vehicles,” Journal of Terramechanics,
+vol. 50, no. 3, pp. 211–232, 2013.
+[3] W. Yuan, Z. Li, and C.-Y. Su, “Multisensor-based navigation and
+control of a mobile service robot,” IEEE Transactions on Systems,
+Man, and Cybernetics: Systems, vol. 51, no. 4, pp. 2624–2634, 2019.
+[4] M. Endo, T. Taniai, R. Yonetani, and G. Ishigami, “Risk-aware path
+planning via probabilistic fusion of traversability prediction for planetary rovers on heterogeneous terrains,” in 2023 IEEE international
+conference on robotics and automation (ICRA). IEEE, 2023, pp.
+11 852–11 858.
+[5] M. Ali, H. Jardali, N. Roy, and L. Liu, “Autonomous navigation,
+mapping and exploration with gaussian processes.” Robotics: Science
+and Systems (RSS), 2023.
+[6] H. Jardali, M. Ali, and L. Liu, “Autonomous mapless navigation on
+uneven terrains,” in 2024 IEEE International Conference on Robotics
+and Automation (ICRA). IEEE, 2024, pp. 13 227–13 233.
+[7] Z. Wang, X. Zhou, C. Xu, and F. Gao, “Geometrically constrained trajectory optimization for multicopters,” IEEE Transactions on Robotics,
+vol. 38, no. 5, pp. 3259–3278, 2022.
+
+[8] Z. Jian, Z. Lu, X. Zhou, B. Lan, A. Xiao, X. Wang, and B. Liang,
+“Putn: A plane-fitting based uneven terrain navigation framework,” in
+2022 IEEE/RSJ International Conference on Intelligent Robots and
+Systems (IROS). IEEE, 2022, pp. 7160–7166.
+[9] L. Xu, K. Chai, Z. Han, H. Liu, C. Xu, Y. Cao, and F. Gao, “An
+efficient trajectory planner for car-like robots on uneven terrain,” in
+2023 IEEE/RSJ International Conference on Intelligent Robots and
+Systems (IROS). IEEE, 2023, pp. 2853–2860.
+[10] F. Atas, G. Cielniak, and L. Grimstad, “Elevation state-space: Surfelbased navigation in uneven environments for mobile robots,” in 2022
+IEEE/RSJ International Conference on Intelligent Robots and Systems
+(IROS). IEEE, 2022, pp. 5715–5721.
+[11] T. Miki, L. Wellhausen, R. Grandia, F. Jenelten, T. Homberger,
+and M. Hutter, “Elevation mapping for locomotion and navigation
+using gpu,” in 2022 IEEE/RSJ International Conference on Intelligent
+Robots and Systems (IROS). IEEE, 2022, pp. 2273–2280.
+[12] P. Krüsi, P. Furgale, M. Bosse, and R. Siegwart, “Driving on point
+clouds: Motion planning, trajectory optimization, and terrain assessment in generic nonplanar environments,” Journal of Field Robotics,
+vol. 34, no. 5, pp. 940–984, 2017.
+[13] P. Fankhauser, M. Bloesch, C. Gehring, M. Hutter, and R. Siegwart,
+“Robot-centric elevation mapping with uncertainty estimates,” in Mobile Service Robotics. World Scientific, 2014, pp. 433–440.
+[14] P. Fankhauser, M. Bloesch, and M. Hutter, “Probabilistic terrain
+mapping for mobile robots with uncertain localization,” IEEE Robotics
+and Automation Letters, vol. 3, no. 4, pp. 3019–3026, 2018.
+[15] A. Dixit, D. D. Fan, K. Otsu, S. Dey, A.-A. Agha-Mohammadi,
+and J. W. Burdick, “Step: Stochastic traversability evaluation and
+planning for risk-aware navigation; results from the darpa subterranean
+challenge,” IEEE Transactions on Field Robotics, 2024.
+[16] K. Zhang, Y. Yang, M. Fu, and M. Wang, “Traversability assessment
+and trajectory planning of unmanned ground vehicles with suspension
+systems on rough terrain,” Sensors, vol. 19, no. 20, p. 4372, 2019.
+[17] A. Kleiner and C. Dornhege, “Real-time localization and elevation
+mapping within urban search and rescue scenarios,” Journal of Field
+Robotics, vol. 24, no. 8-9, pp. 723–745, 2007.
+[18] R. Ouyang, K. H. Low, J. Chen, and P. Jaillet, “Multi-robot active
+sensing of non-stationary gaussian process-based environmental phenomena,” 2014.
+[19] J. Seo, T. Kim, K. Kwak, J. Min, and I. Shim, “Scate: A scalable
+framework for self-supervised traversability estimation in unstructured
+environments,” IEEE Robotics and Automation Letters, vol. 8, no. 2,
+pp. 888–895, 2023.
+[20] C. K. Williams and C. E. Rasmussen, Gaussian processes for machine
+learning. MIT press Cambridge, MA, 2006, vol. 2, no. 3.
+[21] T. X. Lin, J. Guo, S. Al-Abri, and F. Zhang, “Distributed field
+mapping for mobile sensor teams using a derivative-free optimisation
+algorithm,” IET Cyber-Systems and Robotics, vol. 6, no. 2, p. e12111,
+2024.
+[22] E. Snelson and Z. Ghahramani, “Sparse gaussian processes using
+pseudo-inputs,” Advances in neural information processing systems,
+vol. 18, 2005.
+[23] R. Sheth, Y. Wang, and R. Khardon, “Sparse variational inference
+for generalized gp models,” in International Conference on Machine
+Learning. PMLR, 2015, pp. 1302–1311.
+[24] M. Titsias, “Variational learning of inducing variables in sparse
+gaussian processes,” in Artificial intelligence and statistics. PMLR,
+2009, pp. 567–574.
+[25] A. Leininger, M. Ali, H. Jardali, and L. Liu, “Gaussian process-based
+traversability analysis for terrain mapless navigation,” in 2024 IEEE
+International Conference on Robotics and Automation (ICRA). IEEE,
+2024, pp. 10 925–10 931.
+[26] H. Xue, H. Fu, L. Xiao, Y. Fan, D. Zhao, and B. Dai, “Traversability
+analysis for autonomous driving in complex environment: A lidarbased terrain modeling approach,” Journal of Field Robotics, vol. 40,
+no. 7, pp. 1779–1803, 2023.
+[27] M. Zhang, N. Chen, H. Wang, J. Qiu, Z. Han, Q. Ren, C. Xu,
+F. Gao, and Y. Cao, “Universal trajectory optimization framework for
+differential drive robot class,” arXiv preprint arXiv:2409.07924, 2024.
+[28] J. Jeong, Y. Cho, Y.-S. Shin, H. Roh, and A. Kim, “Complex urban
+dataset with multi-level sensors from highly diverse urban environments,” The International Journal of Robotics Research, vol. 38, no. 6,
+pp. 642–657, 2019.
+
+

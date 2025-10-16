@@ -9,9 +9,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="description"
-        content="CREPES: Cooperative RElative Pose Estimation System.">
+        content="FSGP-BGK：基于特征稀疏高斯过程的实时地形可通行性评估。">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>CREPES: 协作式相对位姿估计系统</title>
+  <title>FSGP-BGK：实时地形可通行性评估</title>
 
 <!-- 安装Bulma框架 -->
   <link rel="stylesheet" href="./static/css/bulma.min.css">
@@ -44,7 +44,6 @@
 
 
 
-
 <!--  web body  -->
 <body>
 <!-- 中英文切换 -->
@@ -55,45 +54,57 @@
     <div class="container is-max-desktop">
       <div class="columns is-centered">
         <div class="column has-text-centered">
-          <h1 class="title is-1 publication-title">CREPES: 协作式相对位姿估计系统</h1>
+          <h1 class="title is-1 publication-title">实时时空可通行性评估：基于特征的稀疏高斯过程</h1>
           <div class="is-size-5 publication-authors">
-            <!-- 作者连接缺失状态 -->
             <span class="author-block">
-              <a>寻芝任</a><sup>1,2</sup>,
+              <a href="https://percyhzy.github.io/ZhenyuHou.github.io/">Zhenyu Hou</a><sup>1&dagger;</sup>,
             </span>
             <span class="author-block">
-              <a>黄坚</a><sup>1,2</sup>,
+              <a>Senming Tan</a><sup>1&dagger;</sup>,
             </span>
             <span class="author-block">
-              <a>李哲晗</a><sup>1,2</sup>,
-            </span>
-            <span class="author-block">
-              <a>应镇骏</a><sup>2</sup>,
-            </span>
-            <span class="author-block">
-              <a>王英建</a><sup>1,2</sup>,
-            </span><br>
-            <span class="author-block">
-              <a>许超</a><sup>1,2</sup>,
-            </span>
-            <span class="author-block">
-              <a>高飞</a><sup>1,2</sup>
-            </span>
-            <span class="author-block">
-              <a>曹燕军</a><sup>1,2</sup>
+              <a>Zhihao Zhang</a><sup>1&dagger;</sup>
             </span>
           </div>
           <div class="is-size-5 publication-authors">
-            <span class="author-block"><sup>1</sup>浙江大学,</span>
-            <span class="author-block"><sup>2</sup>浙江大学湖州研究院 </span>
+            <span class="author-block">
+              <a>Long Xu</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a>Mengke Zhang</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a>Zhaoqi He</a><sup>1</sup>
+            </span>
           </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block">
+              <a href="https://scholar.google.com/citations?user=IOCO-YQAAAAJ&amp;hl=en">Chao Xu</a><sup>1,2*</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://feigao-robotics.com/">Fei Gao</a><sup>1,2</sup>,
+            </span>
+            <span class="author-block">
+              <a href="https://yanjundream.github.io/author/yanjun-cao-%E6%9B%B9%E7%87%95%E5%86%9B/">Yanjun Cao</a><sup>1,2*</sup>
+            </span>
+          </div>
+          <div class="is-size-5 publication-authors">
+            <span class="author-block"><sup>1</sup>浙江大学湖州研究院</span>
+            <span class="author-block"><sup>2</sup>浙江大学工业控制国家重点实验室</span>
+          </div>
+          <p class="is-size-6">
+            <sup>&dagger;</sup>共同第一作者。<sup>*</sup>通讯作者。
+          </p>
+          <p class="is-size-6 has-text-weight-semibold">
+            第一作者 Zhenyu Hou 正在积极寻求海外博士机会，欢迎联系！
+          </p>
           <!-- end author -->
           <!-- Button -->
           <div class="column has-text-centered">
             <div class="publication-links">
               <!-- PDF Link. -->
               <span class="link-block">
-                <a href="https://arxiv.org/pdf/2302.01036.pdf"
+                <a href="./IROS2025-WEBSITE.pdf"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fas fa-file-pdf"></i>
@@ -101,24 +112,33 @@
                   <span>论文</span>
                 </a>
               </span>
-              <!-- arxiv Link.  -->
-              <span class="link-block">
-                <a href="https://arxiv.org/abs/2302.01036"
-                   class="external-link button is-normal is-rounded is-dark">
-                  <span class="icon">
-                      <i class="ai ai-arxiv"></i>
-                  </span>
-                  <span>arXiv</span>
-                </a>
-              </span>
               <!-- Code Link. -->
               <span class="link-block">
-                <a href="https://github.com/fast-fire-crepes/crepes_ws"
+                <a href="https://github.com/ZJU-FAST-Lab/FSGP_BGK"
                    class="external-link button is-normal is-rounded is-dark">
                   <span class="icon">
                       <i class="fab fa-github"></i>
                   </span>
-                  <span>代码 (敬请期待)</span>
+                  <span>代码</span>
+                </a>
+              </span>
+              <!-- Poster Link. -->
+              <span class="link-block">
+                <a href="./poster-ZhenyuHou.pdf"
+                   class="external-link button is-normal is-rounded is-link">
+                  <span class="icon">
+                      <i class="fas fa-image"></i>
+                  </span>
+                  <span>海报</span>
+                </a>
+              </span>
+              <!-- Video placeholder -->
+              <span class="link-block">
+                <a class="external-link button is-normal is-rounded is-light" href="#teaser">
+                  <span class="icon">
+                      <i class="fas fa-play"></i>
+                  </span>
+                  <span>演示视频（即将上线）</span>
                 </a>
               </span>
             </div>
@@ -130,35 +150,17 @@
   </div>
 </section>
 
-<!-- First Video -->
-<section class="teaser">
-    <div class="container">
-        <center>
-            <div class="columns is-centered">
-                <div class="column is-five-sixths">
-                <video id="teaser_video" width=40% muted autoplay loop style="border-radius:10px; ">
-                    <source src="static/videos/manual control.mp4" type="video/mp4">
-                </video>
-                <video id="teaser_video" width=40% muted autoplay loop style="border-radius:10px; ">
-                    <source src="static/videos/program comtrol.mp4" type="video/mp4">
-                </video>
-                </div>
-            </div>
-        </center>
-    </div>
+<!-- Teaser -->
+<section class="teaser" id="teaser">
   <div class="container">
-        <center>
-            <div class="columns is-centered">
-                <div class="column is-five-sixths">
-                    <video id="teaser_video" width=40% muted autoplay loop style="border-radius:10px; ">
-                        <source src="static/videos/multi-robots.mp4" type="video/mp4">
-                    </video>
-                    <video id="teaser_video" width=40% muted autoplay loop style="border-radius:10px; ">
-                        <source src="static/videos/long-distance.mp4" type="video/mp4">
-                    </video>
-                </div>
-            </div>
-        </center>
+    <div class="columns is-centered has-text-centered">
+      <div class="column is-three-fifths">
+        <h2 class="title is-3">演示预告</h2>
+        <p class="content has-text-justified">
+          我们正在制作FSGP-BGK地形可通行性评估系统的讲解视频，将展示特征提取、时空融合以及复杂地形导航等关键模块，敬请期待。
+        </p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -171,242 +173,159 @@
         <h2 class="title is-3">摘要</h2>
         <div class="content has-text-justified">
           <p>
-            机器人的相互定位在多机器人合作中起着关键作用。本项目提出了一种新型的专注于多机器人六自由度(DOF)相对姿态的估计系统 <font color="red"><i><b>CREPES</b></i></font>。
-          </p>
-          <p>
-            CREPES硬件结构设计紧凑，其硬件结构包含红外LED，鱼眼相机，超宽带测距模块（UWB）和惯性测量单元（IMU）。
-            通过利用红外光通信，实现相机视觉检测和UWB测距之间的数据关联。
-            通过相机解算的方向信息与UWB测距数据的融合可以获取CREPES相对的3-DOF位置数据。
-            结合相邻CREPES设备的相对位置和IMU重力方向约束，我们可以从一帧传感器测量数据中估计出6-DOF的相对姿势。
-          </p>
-          <p>
-            此外，CREPES包含一个基于误差状态卡尔曼滤波器（ESKF）的估计器，以提高系统的准确性和稳健性。当有多个邻居时，引入姿势图优化（PGO）算法，以进一步提高系统精度。
-            我们进行了大量的实验来证明CREPES在双机协作、集群编队应用中的准确性，以及在复杂定位环境下的性能。
+            复杂自然环境下的安全导航离不开准确的地形可通行性分析。
+            FSGP-BGK提出了一套基于特征的稀疏高斯过程框架，从激光点云中提取曲率与梯度特征，并结合时空贝叶斯高斯核策略，对历史可通行性观测进行概率融合。
+            借助GPU加速的特征计算、诱导点稀疏高斯过程回归与BGK平滑，我们能够实时生成密集且带不确定性估计的可通行性地图。
+            在五类地形（共2500组仿真数据）以及差速机器人实地实验中，FSGP-BGK均显著优于经典高程图方法，实现更高精度、更低方差及更低延迟的可通行性评估。
           </p>
         </div>
       </div>
     </div>
 <!--/ Abstract. -->
-
-    <!-- Paper video. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">论文视频</h2>
-          <center>
-            <video width="75%" muted autoplay loop style="border-radius:10px; ">
-                <source src="static/videos/Crepes_video.mp4" type="video/mp4"></source>
-                <source src="static/videos/Crepes_video.ogg" type="video/ogg"></source>
-                您的浏览器不支持该视频格式
-            </video>
-          </center>
-      </div>
-    </div>
-    <!--/ Paper video. -->
   </div>
 </section>
 
-<!-- System architecture  -->
+<!-- Highlights -->
 <section class="section">
   <div class="container">
     <div class="columns is-centered has-text-centered">
       <div class="column is-three-fifths">
-        <h2 class="title is-3">CREPES的硬件设计及软件架构</h2>
-        <div class="content has-text-justified" >
-          <p>
-            CREPES的硬件系统包含一个惯性测量单元（IMU），一个超宽带测距模块（UWB），一个工业相机和一组红外LED。        
-            相对位姿的直接检测算法采集相邻设备的ID、位置向量（视觉检测）、相对距离（来自UWB）和惯性检测单元IMU数据，用于解算相邻设备位姿的原始估计。         
-            然后，ESKF算法模块使用惯性单元IMU数据对原始估计位姿进行滤波。当周围有多个邻居CREPES时，将采用PGO模块进一步提高位姿估计性能。
-          </p>
+        <h2 class="title is-3">工作亮点</h2>
+        <div class="content has-text-left">
+          <ul>
+            <li>基于诱导点的稀疏高斯过程回归，在点云中预测地形高度、坡度、曲率与不确定性。</li>
+            <li>时空BGK融合引入时间衰减与不确定性权重，实现稳定且实时的历史信息整合。</li>
+            <li>可通行性地图与A*、MINCO规划器及差速驱动控制器无缝联动，形成完整导航框架。</li>
+            <li>在2500个仿真场景与真实户外环境中验证，可将均方误差降至基线的约47.5%，运行时间提升近3倍。</li>
+          </ul>
         </div>
       </div>
     </div>
-
-    <div class="columns is-centered has-text-centered">
-      <img src="static/images/system.jpg" style="width: 75%;" alt="">
-    </div>
   </div>
 </section>
-<!-- End System architecture-->
 
-
-<!-- Hardware iterations -->
+<!-- Method Overview -->
 <section class="section">
   <div class="container">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-three-fifths">
-        <h2 class="title is-3">硬件系统迭代</h2>
-        <div class="content has-text-justified" >
-          <p>
-            为了使设备更加便携，减少硬件输出端口，CREPES的硬件经历了四次迭代优化。
-            从CREPES1到CREPES4，最终CREPES4设备的重量、体积和通信距离列示如下。
+    <h2 class="title is-3 has-text-centered">方法概览</h2>
+    <div class="columns is-multiline">
+      <div class="column is-one-third">
+        <div class="box">
+          <h3 class="title is-4">特征提取</h3>
+          <p class="content">
+            利用GPU加速的KNN、曲率与梯度计算，从激光数据中筛选关键诱导点，并通过PCA降低特征相关性。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="box">
+          <h3 class="title is-4">稀疏高斯过程</h3>
+          <p class="content">
+            采用诱导点稀疏高斯过程在稠密网格上预测高度、坡度与方差，为可通行性评分提供不确定性依据。
+          </p>
+        </div>
+      </div>
+      <div class="column is-one-third">
+        <div class="box">
+          <h3 class="title is-4">BGK融合</h3>
+          <p class="content">
+            时空贝叶斯高斯核平滑融合历史地图，引入时间衰减与方差加权，输出平滑且可信的可通行性热图。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="box">
+          <h3 class="title is-4">规划与控制</h3>
+          <p class="content">
+            生成的可通行性代价图驱动A*搜索与MINCO轨迹优化，差速机器人在仿真与实地均实现平滑跟踪。
+          </p>
+        </div>
+      </div>
+      <div class="column is-half">
+        <div class="box">
+          <h3 class="title is-4">实时性能</h3>
+          <p class="content">
+            单次更新平均耗时33.84&nbsp;ms，显著低于直接堆叠多帧点云的方法，同时降低GPU显存占用，便于嵌入式部署。
           </p>
         </div>
       </div>
     </div>
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <img src="static/images/Hardware_cn.jpg" style="width: 85%;" alt="">
-      </div>
-    </div>
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <img src="static/images/hardware_chinese.jpg" style="width: 60%;" alt="">
-      </div>
-    </div>
   </div>
 </section>
-<!-- End Hardware iterations -->
 
-<!-- System error and applications -->
+<!-- Experiments -->
 <section class="section">
-  <!-- system error -->
   <div class="container">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-four-fifths">
-        <h2 class="title is-3">CREPES相对位姿估计系统实机测试</h2>
-        <h3 class="title is-4">采用NOKOV动捕系统输出作为真值</h3>
-        <div class="content has-text-justified " >
-          <center>
-            <video width="80%" muted autoplay loop style="border-radius:10px; ">
-              <source src="static/videos/error test.mp4" type="video/mp4"></source>
-              <source src="static/videos/error test.ogg" type="video/ogg"></source>
-              您的浏览器不支持该视频格式
-            </video>
-          </center>
-        </div>
-      </div>
-    </div>
-  </div>
-  <!-- dynamic and static errors -->
-  <div class="container is-max-desktop">
+    <h2 class="title is-3 has-text-centered">仿真与基准评测</h2>
     <div class="columns is-centered">
-      <!-- static error -->
-      <div class="column">
+      <div class="column is-three-quarters">
         <div class="content">
-          <h2 class="title is-3">静态测试误差</h2>
-          <p>
-            双机在静止状态下进行定位。测试距离分别为：2.5米，5米和10米。
-            位置误差的中位数小于<b><font color="red">0.1米</font></b>。
-            姿态误差的中位数小于<b><font color="red">0.4度</font></b>。
-          </p>
-        </div>
-      </div>
-      <!-- dynamic error -->
-      <div class="column">
-        <div class="content">
-          <h2 class="title is-3">动态测试误差</h2>
-          <p>
-            双机在运动状态下进行定位。双机运动距离范围在5米至10米。
-            位置误差的中位数小于<b><font color="red">0.1米</font></b>。
-            姿态误差的中位数小于<b><font color="red">2度</font></b>。
-          </p>
+          <ul>
+            <li>覆盖丘陵、森林、废墟、公路、室内五类地形，合计2500组带遮挡与噪声的点云数据集。</li>
+            <li>在丘陵与森林场景中，FSGP-BGK相对基线SGP将平均误差分别降低52.5%与37.9%，并在所有地形上获得最低方差。</li>
+            <li>诱导点消融实验（50与500点）表明，即便诱导点更密集，BGK融合仍能显著提升精度与稳定性。</li>
+            <li>与高程图插值相比，平均运行时间从107.85&nbsp;ms降至33.84&nbsp;ms，同时输出更平滑的可通行性估计。</li>
+          </ul>
         </div>
       </div>
     </div>
- 
-    <div class="columns is-centered">
-      <div class="column">
-        <img src="./static/images/static error.jpg" style="width: 100%;" alt="">
-
-      </div>
-      <div class="column">
-        <img src="./static/images/dynamic error.jpg" style="width: 100%;" alt="">
-      </div>     
-    </div>
-  <!-- End system errors -->
-    
-  <!-- Application. -->
-    <div class="columns is-centered">
-      <div class="column is-full-width">
-        <h2 class="title is-3">CREPES应用</h2>
-        <!-- application1 -->
-        <h3 class="title is-4">极限姿态测试</h3>
-        <div class="content has-text-justified">
-          <center>
-            <video width="100%" muted autoplay loop style="border-radius:10px; ">
-                <source src="static/videos/Big pose.mp4" type="video/mp4"></source>
-                <source src="static/videos/Big pose.ogg" type="video/ogg"></source>
-                您的浏览器不支持该视频格式
-            </video>
-          </center>
-        </div>
-        <!-- application2 -->
-        <h3 class="title is-4">非视距定位场景</h3>
-        <div class="content has-text-justified">
-          <p>
-            在非视距和遮挡情况下，如何实现设备的位姿估计和定位是一个巨大的挑战。
-            该实验中，我们使用五个机器人在存在遮挡的复杂场景下进行定位。下列视频展示了实验中NOKOV动捕系统真值输出和CREPES系统相对定位输出的数据对比。
-          </p>
-          <center>
-            <video width="95%" muted autoplay loop style="border-radius:10px; ">
-                <source src="static/videos/NLOS.mp4" type="video/mp4"></source>
-                <source src="static/videos/NLOS.ogg" type="video/ogg"></source>
-                您的浏览器不支持该视频格式
-            </video>
-          </center>
-        </div>
-        <!-- application3 -->
-        <h3 class="title is-4">MPC控制器协同应用</h3>
-        <div class="content has-text-justified">
-          <p>
-            地面车辆搭载CREPES设备，并通过遥控控制。无人飞行器搭载相同CREPES进行定位，并跟踪地面车辆进行绕环轨迹运动。
-          </p>
-          <center>
-            <video width="95%" muted autoplay loop style="border-radius:10px; ">
-                <source src="static/videos/MPC controller.mp4" type="video/mp4"></source>
-                <source src="static/videos/MPC controller.ogg" type="video/ogg"></source>
-                您的浏览器不支持该视频格式
-            </video>
-          </center>
-          <p>
-            三台无人机搭载CREPES获取相对定位，环绕车辆进行跟踪。
-          </p>
-          <center>
-            <video width="95%" muted autoplay loop style="border-radius:10px; ">
-                <source src="static/videos/Coni-Swarm_720p.mp4" type="video/mp4"></source>
-                <source src="static/videos/Coni-Swarm_720p.ogg" type="video/ogg"></source>
-                您的浏览器不支持该视频格式
-            </video>
-          </center>
-        </div>
-        <!-- application4 -->
-        <h3 class="title is-4">空地协同盲车导航应用</h3>
-        <div class="content has-text-justified">
-          <p>
-            无人机搭载雷达和CREPES设备，运行SLAM算法，作为系统的领导者。无人车仅搭载CREPES设备获取相对位资，在无人机引导下完成环境探索。
-          </p>
-          <center>
-            <div class="column">
-              <img src="./static/images/ColAG.jpg" style="width: 100%;" alt="">
-            </div>
-          </center>
-        </div>
-      </div>
-    </div>
-  <!-- End application. -->
-
   </div>
 </section>
 
+<!-- Real-world -->
+<section class="section">
+  <div class="container">
+    <h2 class="title is-3 has-text-centered">真实场景验证</h2>
+    <div class="columns is-centered">
+      <div class="column is-three-quarters">
+        <div class="content">
+          <p>
+            我们将系统部署在装备Livox MID-360激光雷达、Intel Core i7计算单元与RTX 2060 GPU的Agilex Scout Mini上。
+            FSGP-BGK可在20&nbsp;Hz频率下实时输出可通行性地图，准确标记传统SGP忽略的小型障碍，同时显著降低显存占用。
+          </p>
+          <p>
+            在Isaac Sim环境中，结合FSGP-BGK生成的代价图，MINCO轨迹优化可获得连续平滑的导航路径，验证了方法对下游规划模块的兼容性。
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Resources -->
+<section class="section">
+  <div class="container">
+    <h2 class="title is-3 has-text-centered">资源与联系方式</h2>
+    <div class="columns is-centered">
+      <div class="column is-half">
+        <div class="content has-text-centered">
+          <p><a href="./IROS2025-WEBSITE.pdf">论文下载（PDF）</a></p>
+          <p><a href="https://github.com/ZJU-FAST-Lab/FSGP_BGK">代码仓库</a></p>
+          <p>交流邮箱：<a href="mailto:xiagelearn@gmail.com">xiagelearn@gmail.com</a>，<a href="mailto:yanjunhi@zju.edu.cn">yanjunhi@zju.edu.cn</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <section class="section" id="BibTeX">
   <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2>
+    <h2 class="title">引用</h2>
     <pre>
       <code>
-        @misc{xun2023crepes,
-        title={CREPES: Cooperative RElative Pose Estimation System}, 
-        author={Zhiren Xun and Jian Huang and Zhehan Li and Zhenjun Ying and Yingjian Wang and Chao Xu and Fei Gao and Yanjun Cao},
-        year={2023},
-        archivePrefix={IROS}
-        }
+@inproceedings{hou2025fsgpbgk,
+  title={Real-time Spatial-temporal Traversability Assessment via Feature-based Sparse Gaussian Process},
+  author={Hou, Zhenyu and Tan, Senming and Zhang, Zhihao and Xu, Long and Zhang, Mengke and He, Zhaoqi and Xu, Chao and Gao, Fei and Cao, Yanjun},
+  booktitle={IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  year={2025}
+}
       </code>
     </pre>
   </div>
 </section>
 
- <!-- endfooter -->
- <footer class="footer">
+<!-- endfooter -->
+<footer class="footer">
   <div class="container">
     <!-- href links -->
     <div class="columns is-centered">
@@ -428,7 +347,7 @@
               <a rel="license" href="http://pages.fast-fire.space">
                 <img src="static/images/qrcode_page.jpg" alt="">
                 <br>
-                <b>相 关 项 目</b>
+                <b>相关项目</b>
               </a>
             </div>
           </div>
@@ -437,7 +356,7 @@
               <a rel="license" href="https://u.wechat.com/EFFxPvWiRRmMD9T_LvDgm0k">
                 <img src="static/images/qrcode_weixin.jpg" alt="">
                 <br>
-                <b>微 信 联 系</b>
+                <b>微信公众号</b>
               </a>
             </div>
           </div>
@@ -449,7 +368,7 @@
       <div class="column has-background-link-light is-4">
         <div class="content">
           <h4>
-            邮箱:
+            Email:
             <a rel="license" href="mailto:yanjunhi@zju.edu.cn">
               yanjunhi@zju.edu.cn
             </a>
@@ -461,7 +380,7 @@
           <h4>
             地址:
             <a rel="license" href="https://ditu.amap.com/place/B0G257WTA3">
-              浙江省湖州市吴兴区西塞山路819号浙江大学湖州研究院B2幢
+              浙江省湖州市吴兴区西塞山路819号 浙江大学湖州研究院B2幢
             </a>
           </h4>
         </div>
