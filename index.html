@@ -71,16 +71,16 @@
             <span class="author-block">
               <a>Mengke Zhang</a><sup>1,2</sup>,
             </span>
-            <!-- <span class="author-block">
+            <span class="author-block">
               <a>Zhaoqi He</a><sup>1</sup>
-            </span> -->
+            </span>
           </div>
           <div class="is-size-5 publication-authors">
             <span class="author-block">
               <a href="https://scholar.google.com/citations?user=IOCO-YQAAAAJ&amp;hl=en">Chao Xu</a><sup>1,2*</sup>,
             </span>
             <span class="author-block">
-              <a href="https://feigao-robotics.com/">Fei Gao</a><sup>1,2*</sup>,
+              <a href="https://feigao-robotics.com/">Fei Gao</a><sup>1,2</sup>,
             </span>
             <span class="author-block">
               <a href="https://yanjundream.github.io/author/yanjun-cao-%E6%9B%B9%E7%87%95%E5%86%9B/">Yanjun Cao</a><sup>1,2*</sup>
@@ -149,15 +149,17 @@
 </section>
 
 <!-- Teaser -->
-<section class="teaser" id="teaser">
+<section class="section teaser" id="teaser">
   <div class="container">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-three-fifths">
-        <h2 class="title is-3">Teaser</h2>
-        <p class="content has-text-justified">
-          A narrated walkthrough of the FSGP-BGK traversability assessment pipeline is in preparation and will be shared here soon.
-          Stay tuned for demonstrations highlighting feature extraction, spatial-temporal fusion, and autonomous navigation on uneven terrain.
-        </p>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content-card has-text-centered">
+          <h2 class="title is-3">Teaser</h2>
+          <p class="content">
+            A narrated walkthrough of the FSGP-BGK traversability assessment pipeline is in preparation and will be shared here soon.
+            Stay tuned for demonstrations highlighting feature extraction, spatial-temporal fusion, and autonomous navigation on uneven terrain.
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -166,49 +168,25 @@
 <!-- abstract  -->
 <section class="section">
   <div class="container">
-    <!-- Abstract. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-three-fifths">
-        <h2 class="title is-3">Abstract</h2>
-        <div class="content has-text-justified" >
-          <p>
-             Terrain analysis is critical for the practical ap-
-plication of ground mobile robots in real-world tasks, espe-
-cially in outdoor unstructured environments. In this paper,
-we propose a novel spatial-temporal traversability assessment
-method, which aims to enable autonomous robots to effectively
-navigate through complex terrains. Our approach utilizes
-sparse Gaussian processes (SGP) to extract geometric features
-(curvature, gradient, elevation, etc.) directly from point cloud
-scans. These features are then used to construct a high-
-resolution local traversability map. Then, we design a spatial-
-temporal Bayesian Gaussian kernel (BGK) inference method to
-dynamically evaluate traversability scores, integrating historical
-and real-time data while considering factors such as slope,
-flatness, gradient, and uncertainty metrics. GPU acceleration is
-applied in the feature extraction step, and the system achieves
-real-time performance. Extensive simulation experiments across
-diverse terrain scenarios demonstrate that our method outper-
-forms SOTA approaches in both accuracy and computational
-efficiency. Additionally, we develop an autonomous navigation
-framework integrated with the traversability map and validate
-it with a differential driven vehicle in complex outdoor envi-
-ronments. Our code will be open-source for further research
-and development by the community,https://github.com
-/ZJU-FAST-Lab/FSGP_BGK.
-          </p>
-        </div>
-      </div>
-    </div>
-<!--/ Abstract. -->
     <div class="columns is-centered">
-      <div class="column is-four-fifths">
-        <figure class="image">
-          <img src="static/images/head_figure-1.png" alt="Simulation traversability map and real-world testing environment" style="width: 100%; border-radius: 8px;">
-          <figcaption class="has-text-centered is-size-6">
-            (a) Simulation results and the corresponding traversability map; (b) Real-world testing environment, where the yellow line indicates areas that are easy to traverse.
-          </figcaption>
-        </figure>
+      <div class="column is-9">
+        <div class="content-card">
+          <h2 class="title is-3 has-text-centered">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Terrain analysis is critical for the practical application of ground mobile robots in real-world tasks, especially in outdoor unstructured environments.
+              We propose FSGP-BGK, a spatial-temporal traversability assessment framework that extracts geometric features directly from LiDAR point clouds using a feature-driven sparse Gaussian process (SGP) and fuses real-time and historical data via a Bayesian Gaussian kernel (BGK).
+              GPU-accelerated feature extraction, inducing-point regression, and BGK smoothing produce dense, uncertainty-aware traversability maps.
+              Extensive simulations across diverse terrain scenarios and real-world tests on a differential-drive platform demonstrate superior accuracy, robustness, and efficiency compared to state-of-the-art baselines.
+            </p>
+          </div>
+          <figure class="paper-figure">
+            <img src="static/images/head_figure-1.png" alt="Simulation traversability map and real-world testing environment">
+            <figcaption class="has-text-centered is-size-6">
+              (a) Simulation results and the corresponding traversability map; (b) Real-world testing environment, where the yellow line indicates areas that are easy to traverse.
+            </figcaption>
+          </figure>
+        </div>
       </div>
     </div>
   </div>
@@ -217,29 +195,44 @@ and development by the community,https://github.com
 <!-- Highlights -->
 <section class="section">
   <div class="container">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-three-fifths">
-        <h2 class="title is-3">Highlights</h2>
-        <div class="content has-text-left" >
-          <ul>
-            <li>We present an efficient, feature-driven SGP pipeline
-for traversability analysis. Our approach seamlessly
-integrates precise regression with robust uncertainty
-modeling, thereby enhancing performance in complex
-environments.</li>
-            <li>We introduce a novel spatial-temporal BGK inference
-framework to fuse historical observational data into the
-traversability map. This method significantly improves
-adaptability in changing environments.</li>
-            <li>We integrated the traversability assessment function
-into an autonomous navigation system and open-
-sourced the framework. The performance has been
-verified through simulation and real-world experiments
-in challenging scenarios. Our code will open to foster
-reproducibility and encourage further research within
-the community.</li>
-            
-          </ul>
+    <div class="columns is-centered">
+      <div class="column is-10">
+        <div class="content-card">
+          <h2 class="title is-3 has-text-centered">Highlights</h2>
+          <div class="columns is-multiline">
+            <div class="column is-half">
+              <div class="highlight-box">
+                <h3 class="title is-5">Feature-driven SGP pipeline</h3>
+                <p>
+                  GPU-accelerated KNN, curvature, and gradient extraction compress LiDAR point clouds into an informative inducing set, enabling precise SGP-based elevation and slope estimation with quantified uncertainty.
+                </p>
+              </div>
+            </div>
+            <div class="column is-half">
+              <div class="highlight-box">
+                <h3 class="title is-5">Spatial-temporal BGK fusion</h3>
+                <p>
+                  A Bayesian Gaussian kernel blends real-time predictions with historical traversability maps using decay-aware confidence weighting, yielding smooth and stable cost layers.
+                </p>
+              </div>
+            </div>
+            <div class="column is-half">
+              <div class="highlight-box">
+                <h3 class="title is-5">Integrated navigation stack</h3>
+                <p>
+                  Traversability costs guide A* search, MINCO trajectory optimization, and closed-loop control, forming a complete autonomy workflow for uneven terrain navigation.
+                </p>
+              </div>
+            </div>
+            <div class="column is-half">
+              <div class="highlight-box">
+                <h3 class="title is-5">Validated performance</h3>
+                <p>
+                  Evaluated on 2,500 simulated scenes and outdoor deployments, FSGP-BGK cuts mean error by up to 52% and runtime by 3&times; versus elevation maps while preserving low variance.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -250,13 +243,15 @@ the community.</li>
 <section class="section">
   <div class="container">
     <div class="columns is-centered">
-      <div class="column is-four-fifths">
-        <figure class="image">
-          <img src="static/images/overview-1.png" alt="Overview of the FSGP-BGK traversability pipeline" style="width: 100%; border-radius: 8px;">
-          <figcaption class="has-text-centered is-size-6">
-            Overview of the proposed terrain traversability mapping and navigation framework. From left to right, localization and LiDAR point cloud data are fed into the Feature Extraction module, where curvature and gradient features are computed for each point. These features are then processed by a Sparse Gaussian Process (SGP) model with induced points, yielding local height predictions, variance, and gradient information. Next, a spatial-temporal Bayesian Gaussian Kernel (BGK) fusion step integrates these predictions with historical maps to produce a refined traversability cost map. Finally, we employ A* for trajectory search, MINCO for trajectory optimization, and a controller for trajectory tracking, thereby generating the necessary control commands for the autonomous vehicle to navigate uneven terrain safely and efficiently.
-          </figcaption>
-        </figure>
+      <div class="column is-10">
+        <div class="content-card">
+          <figure class="paper-figure">
+            <img src="static/images/overview-1.png" alt="Overview of the FSGP-BGK traversability pipeline">
+            <figcaption class="has-text-centered is-size-6">
+              Overview of the proposed terrain traversability mapping and navigation framework. From left to right, localization and LiDAR point cloud data are fed into the Feature Extraction module, where curvature and gradient features are computed for each point. These features are then processed by a Sparse Gaussian Process (SGP) model with induced points, yielding local height predictions, variance, and gradient information. Next, a spatial-temporal Bayesian Gaussian Kernel (BGK) fusion step integrates these predictions with historical maps to produce a refined traversability cost map. Finally, we employ A* for trajectory search, MINCO for trajectory optimization, and a controller for trajectory tracking, thereby generating the necessary control commands for the autonomous vehicle to navigate uneven terrain safely and efficiently.
+            </figcaption>
+          </figure>
+        </div>
       </div>
     </div>
   </div>
@@ -265,47 +260,53 @@ the community.</li>
 <!-- Method Overview -->
 <section class="section">
   <div class="container">
-    <h2 class="title is-3 has-text-centered">Method Overview</h2>
-    <div class="columns is-multiline">
-      <div class="column is-one-third">
-        <div class="box">
-          <h3 class="title is-4">Feature Extraction</h3>
-          <p class="content">
-            GPU-accelerated KNN, curvature, and gradient computation condense LiDAR point clouds into a sparse but informative inducing set.
-            PCA decorrelates features before regression for stable learning.
-          </p>
-        </div>
-      </div>
-      <div class="column is-one-third">
-        <div class="box">
-          <h3 class="title is-4">Sparse GP Traversability</h3>
-          <p class="content">
-            An inducing-point SGP predicts elevation, slope magnitude, curvature, and variance on a dense grid, supporting uncertainty-aware traversability scoring.
-          </p>
-        </div>
-      </div>
-      <div class="column is-one-third">
-        <div class="box">
-          <h3 class="title is-4">BGK Fusion</h3>
-          <p class="content">
-            Bayesian Gaussian kernel smoothing injects temporal decay and variance-weighted confidence, yielding smooth, history-aware traversability maps ready for planning.
-          </p>
-        </div>
-      </div>
-      <div class="column is-half">
-        <div class="box">
-          <h3 class="title is-4">Planning &amp; Control</h3>
-          <p class="content">
-            The traversability cost map feeds A* search and MINCO trajectory optimization; the resulting paths are tracked by a differential-drive controller in both simulation and field tests.
-          </p>
-        </div>
-      </div>
-      <div class="column is-half">
-        <div class="box">
-          <h3 class="title is-4">Real-time Performance</h3>
-          <p class="content">
-            FSGP-BGK attains 33.84&nbsp;ms average runtime per update with reduced GPU memory usage compared to direct multi-frame accumulation, enabling deployment on embedded GPUs.
-          </p>
+    <div class="columns is-centered">
+      <div class="column is-12">
+        <div class="content-card">
+          <h2 class="title is-3 has-text-centered">Method Overview</h2>
+          <div class="columns is-multiline">
+            <div class="column is-one-third">
+              <div class="method-box">
+                <h3 class="title is-4">Feature Extraction</h3>
+                <p class="content">
+                  GPU-accelerated KNN, curvature, and gradient computation condense LiDAR point clouds into a sparse but informative inducing set.
+                  PCA decorrelates features before regression for stable learning.
+                </p>
+              </div>
+            </div>
+            <div class="column is-one-third">
+              <div class="method-box">
+                <h3 class="title is-4">Sparse GP Traversability</h3>
+                <p class="content">
+                  An inducing-point SGP predicts elevation, slope magnitude, curvature, and variance on a dense grid, supporting uncertainty-aware traversability scoring.
+                </p>
+              </div>
+            </div>
+            <div class="column is-one-third">
+              <div class="method-box">
+                <h3 class="title is-4">BGK Fusion</h3>
+                <p class="content">
+                  Bayesian Gaussian kernel smoothing injects temporal decay and variance-weighted confidence, yielding smooth, history-aware traversability maps ready for planning.
+                </p>
+              </div>
+            </div>
+            <div class="column is-half">
+              <div class="method-box">
+                <h3 class="title is-4">Planning &amp; Control</h3>
+                <p class="content">
+                  The traversability cost map feeds A* search and MINCO trajectory optimization; the resulting paths are tracked by a differential-drive controller in both simulation and field tests.
+                </p>
+              </div>
+            </div>
+            <div class="column is-half">
+              <div class="method-box">
+                <h3 class="title is-4">Real-time Performance</h3>
+                <p class="content">
+                  FSGP-BGK attains 33.84&nbsp;ms average runtime per update with reduced GPU memory usage compared to direct multi-frame accumulation, enabling deployment on embedded GPUs.
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -315,16 +316,18 @@ the community.</li>
 <!-- Experiments -->
 <section class="section">
   <div class="container">
-    <h2 class="title is-3 has-text-centered">Simulation &amp; Benchmark Studies</h2>
     <div class="columns is-centered">
-      <div class="column is-three-quarters">
-        <div class="content">
-          <ul>
-            <li>Five terrain classes (Hilly, Forest, Ruin, Road, Indoor) with 2,500 procedurally generated point clouds evaluate robustness under occlusions and sensor noise.</li>
-            <li>FSGP-BGK lowers mean traversability error by 52.5% on hilly terrain and 37.9% on forest terrain relative to baseline SGP, while achieving the lowest variance across all categories.</li>
-            <li>Inducing-point ablations (50 vs. 500 points) reveal that BGK fusion sustains accuracy gains even with dense inducing sets.</li>
-            <li>Compared with elevation-map interpolation, FSGP-BGK achieves nearly three times faster runtime (33.84&nbsp;ms vs. 107.85&nbsp;ms) with reduced uncertainty.</li>
-          </ul>
+      <div class="column is-10">
+        <div class="content-card">
+          <h2 class="title is-3 has-text-centered">Simulation &amp; Benchmark Studies</h2>
+          <div class="content">
+            <ul>
+              <li>Five terrain classes (Hilly, Forest, Ruin, Road, Indoor) with 2,500 procedurally generated point clouds evaluate robustness under occlusions and sensor noise.</li>
+              <li>FSGP-BGK lowers mean traversability error by 52.5% on hilly terrain and 37.9% on forest terrain relative to baseline SGP, while achieving the lowest variance across all categories.</li>
+              <li>Inducing-point ablations (50 vs. 500 points) reveal that BGK fusion sustains accuracy gains even with dense inducing sets.</li>
+              <li>Compared with elevation-map interpolation, FSGP-BGK achieves nearly three times faster runtime (33.84&nbsp;ms vs. 107.85&nbsp;ms) with reduced uncertainty.</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -334,17 +337,19 @@ the community.</li>
 <!-- Real-world -->
 <section class="section">
   <div class="container">
-    <h2 class="title is-3 has-text-centered">Real-world Validation</h2>
     <div class="columns is-centered">
-      <div class="column is-three-quarters">
-        <div class="content">
-          <p>
-            We deploy FSGP-BGK on an Agilex Scout Mini equipped with a Livox MID-360 LiDAR, an Intel Core i7 compute unit, and an RTX 2060 GPU.
-            The system maintains 20&nbsp;Hz traversability updates and accurately highlights small obstacles that baseline SGP fails to capture, while consuming less GPU memory.
-          </p>
-          <p>
-            In Isaac Sim, traversability-aware maps enable smooth trajectory optimization and tracking with MINCO, confirming that the cost map integrates seamlessly with downstream planning algorithms.
-          </p>
+      <div class="column is-10">
+        <div class="content-card">
+          <h2 class="title is-3 has-text-centered">Real-world Validation</h2>
+          <div class="content">
+            <p>
+              We deploy FSGP-BGK on an Agilex Scout Mini equipped with a Livox MID-360 LiDAR, an Intel Core i7 compute unit, and an RTX 2060 GPU.
+              The system maintains 20&nbsp;Hz traversability updates and accurately highlights small obstacles that baseline SGP fails to capture, while consuming less GPU memory.
+            </p>
+            <p>
+              In Isaac Sim, traversability-aware maps enable smooth trajectory optimization and tracking with MINCO, confirming that the cost map integrates seamlessly with downstream planning algorithms.
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -354,13 +359,15 @@ the community.</li>
 <!-- Resources -->
 <section class="section">
   <div class="container">
-    <h2 class="title is-3 has-text-centered">Resources</h2>
     <div class="columns is-centered">
-      <div class="column is-half">
-        <div class="content has-text-centered">
-          <p><a href="./IROS2025-WEBSITE.pdf">Paper (PDF)</a></p>
-          <p><a href="https://github.com/ZJU-FAST-Lab/FSGP_BGK">Code Repository</a></p>
-          <p>Contact: <a href="mailto:xiagelearn@gmail.com">xiagelearn@gmail.com</a>, <a href="mailto:yanjunhi@zju.edu.cn">yanjunhi@zju.edu.cn</a></p>
+      <div class="column is-8">
+        <div class="content-card has-text-centered">
+          <h2 class="title is-3">Resources</h2>
+          <div class="resources-list">
+            <p><a href="./IROS2025-WEBSITE.pdf">Paper (PDF)</a></p>
+            <p><a href="https://github.com/ZJU-FAST-Lab/FSGP_BGK">Code Repository</a></p>
+            <p>Contact: <a href="mailto:xiagelearn@gmail.com">xiagelearn@gmail.com</a>, <a href="mailto:yanjunhi@zju.edu.cn">yanjunhi@zju.edu.cn</a></p>
+          </div>
         </div>
       </div>
     </div>
@@ -368,18 +375,20 @@ the community.</li>
 </section>
 
 <section class="section" id="BibTeX">
-  <div class="container is-max-desktop content">
-    <h2 class="title">BibTeX</h2>
-    <pre>
-      <code>
-@inproceedings{hou2025fsgpbgk,
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content-card">
+          <h2 class="title is-4">BibTeX</h2>
+          <pre><code>@inproceedings{hou2025fsgpbgk,
   title={Real-time Spatial-temporal Traversability Assessment via Feature-based Sparse Gaussian Process},
   author={Hou, Zhenyu and Tan, Senming and Zhang, Zhihao and Xu, Long and Zhang, Mengke and He, Zhaoqi and Xu, Chao and Gao, Fei and Cao, Yanjun},
   booktitle={IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
   year={2025}
-}
-      </code>
-    </pre>
+}</code></pre>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 

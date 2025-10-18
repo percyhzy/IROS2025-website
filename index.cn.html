@@ -151,14 +151,16 @@
 </section>
 
 <!-- Teaser -->
-<section class="teaser" id="teaser">
+<section class="section teaser" id="teaser">
   <div class="container">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-three-fifths">
-        <h2 class="title is-3">演示预告</h2>
-        <p class="content has-text-justified">
-          我们正在制作FSGP-BGK地形可通行性评估系统的讲解视频，将展示特征提取、时空融合以及复杂地形导航等关键模块，敬请期待。
-        </p>
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content-card has-text-centered">
+          <h2 class="title is-3">演示预告</h2>
+          <p class="content">
+            我们正在制作 FSGP-BGK 地形可通行性评估系统的讲解视频，将呈现特征提取、时空融合以及复杂地形导航等关键模块，敬请期待。
+          </p>
+        </div>
       </div>
     </div>
   </div>
@@ -167,29 +169,25 @@
 <!-- abstract  -->
 <section class="section">
   <div class="container">
-    <!-- Abstract. -->
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-three-fifths">
-        <h2 class="title is-3">摘要</h2>
-        <div class="content has-text-justified">
-          <p>
-            复杂自然环境下的安全导航离不开准确的地形可通行性分析。
-            FSGP-BGK提出了一套基于特征的稀疏高斯过程框架，从激光点云中提取曲率与梯度特征，并结合时空贝叶斯高斯核策略，对历史可通行性观测进行概率融合。
-            借助GPU加速的特征计算、诱导点稀疏高斯过程回归与BGK平滑，我们能够实时生成密集且带不确定性估计的可通行性地图。
-            在五类地形（共2500组仿真数据）以及差速机器人实地实验中，FSGP-BGK均显著优于经典高程图方法，实现更高精度、更低方差及更低延迟的可通行性评估。
-          </p>
-        </div>
-      </div>
-    </div>
-<!--/ Abstract. -->
     <div class="columns is-centered">
-      <div class="column is-four-fifths">
-        <figure class="image">
-          <img src="static/images/head_figure-1.png" alt="仿真可通行性地图与真实环境测试场景" style="width: 100%; border-radius: 8px;">
-          <figcaption class="has-text-centered is-size-6">
-            (a) 仿真结果及其可通行性地图；(b) 真实环境测试场景，黄色轨迹表示易于通行的区域。
-          </figcaption>
-        </figure>
+      <div class="column is-9">
+        <div class="content-card">
+          <h2 class="title is-3 has-text-centered">摘要</h2>
+          <div class="content has-text-justified">
+            <p>
+              复杂自然环境下的安全导航离不开准确的地形可通行性分析。
+              FSGP-BGK 提出了一套基于特征的稀疏高斯过程（SGP）框架，从激光点云中提取曲率与梯度特征，并结合时空贝叶斯高斯核（BGK）策略，将历史观测与实时估计进行概率融合。
+              通过 GPU 加速的特征计算、诱导点稀疏回归与 BGK 平滑，系统可实时生成密集且带不确定性度量的可通行性地图。
+              在五类地形（共 2500 组仿真数据）以及差速机器人实地实验中，FSGP-BGK 相比 SOTA 方法取得更高精度、更低方差和更优实时性能。
+            </p>
+          </div>
+          <figure class="paper-figure">
+            <img src="static/images/head_figure-1.png" alt="仿真可通行性地图与真实环境测试场景">
+            <figcaption class="has-text-centered is-size-6">
+              (a) 仿真结果及其可通行性地图；(b) 真实环境测试场景，黄色轨迹表示易于通行的区域。
+            </figcaption>
+          </figure>
+        </div>
       </div>
     </div>
   </div>
@@ -198,16 +196,44 @@
 <!-- Highlights -->
 <section class="section">
   <div class="container">
-    <div class="columns is-centered has-text-centered">
-      <div class="column is-three-fifths">
-        <h2 class="title is-3">工作亮点</h2>
-        <div class="content has-text-left">
-          <ul>
-            <li>基于诱导点的稀疏高斯过程回归，在点云中预测地形高度、坡度、曲率与不确定性。</li>
-            <li>时空BGK融合引入时间衰减与不确定性权重，实现稳定且实时的历史信息整合。</li>
-            <li>可通行性地图与A*、MINCO规划器及差速驱动控制器无缝联动，形成完整导航框架。</li>
-            <li>在2500个仿真场景与真实户外环境中验证，可将均方误差降至基线的约47.5%，运行时间提升近3倍。</li>
-          </ul>
+    <div class="columns is-centered">
+      <div class="column is-10">
+        <div class="content-card">
+          <h2 class="title is-3 has-text-centered">工作亮点</h2>
+          <div class="columns is-multiline">
+            <div class="column is-half">
+              <div class="highlight-box">
+                <h3 class="title is-5">特征驱动的 SGP 管线</h3>
+                <p>
+                  GPU 加速的 KNN、曲率与梯度提取压缩点云，构建信息密度高的诱导点集，使 SGP 能够准确估计高度、坡度和不确定性。
+                </p>
+              </div>
+            </div>
+            <div class="column is-half">
+              <div class="highlight-box">
+                <h3 class="title is-5">时空 BGK 融合</h3>
+                <p>
+                  贝叶斯高斯核利用时间衰减和置信度权重，将历史地图与实时预测平滑融合，输出稳定的可通行性代价层。
+                </p>
+              </div>
+            </div>
+            <div class="column is-half">
+              <div class="highlight-box">
+                <h3 class="title is-5">完整自主导航流程</h3>
+                <p>
+                  可通行性代价图驱动 A* 搜索、MINCO 轨迹优化与闭环控制，构成适用于复杂地形的空地一体自主方案。
+                </p>
+              </div>
+            </div>
+            <div class="column is-half">
+              <div class="highlight-box">
+                <h3 class="title is-5">仿真与实车验证</h3>
+                <p>
+                  覆盖 2500 组仿真场景及户外实验，FSGP-BGK 将均方误差降低超 50%，并将运行时延缩短至传统高程图的三分之一。
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -218,13 +244,15 @@
 <section class="section">
   <div class="container">
     <div class="columns is-centered">
-      <div class="column is-four-fifths">
-        <figure class="image">
-          <img src="static/images/overview-1.png" alt="FSGP-BGK 地形可通行性评估流程总览" style="width: 100%; border-radius: 8px;">
-          <figcaption class="has-text-centered is-size-6">
-            系统总览：左起，定位与激光点云输入至特征提取模块计算曲率和梯度；随后稀疏高斯过程结合诱导点得到高度、方差与梯度预测；时空BGK融合历史地图生成精炼的可通行性代价图；最后使用A*搜索、MINCO轨迹优化和控制器，实现差速机器人在复杂地形中的安全自主导航。
-          </figcaption>
-        </figure>
+      <div class="column is-10">
+        <div class="content-card">
+          <figure class="paper-figure">
+            <img src="static/images/overview-1.png" alt="FSGP-BGK 地形可通行性评估流程总览">
+            <figcaption class="has-text-centered is-size-6">
+              系统总览：左起，定位与激光点云输入至特征提取模块计算曲率和梯度；随后稀疏高斯过程结合诱导点得到高度、方差与梯度预测；时空 BGK 融合历史地图生成精炼的可通行性代价图；最后使用 A* 搜索、MINCO 轨迹优化和控制器，实现差速机器人在复杂地形中的安全自主导航。
+            </figcaption>
+          </figure>
+        </div>
       </div>
     </div>
   </div>
@@ -233,46 +261,52 @@
 <!-- Method Overview -->
 <section class="section">
   <div class="container">
-    <h2 class="title is-3 has-text-centered">方法概览</h2>
-    <div class="columns is-multiline">
-      <div class="column is-one-third">
-        <div class="box">
-          <h3 class="title is-4">特征提取</h3>
-          <p class="content">
-            利用GPU加速的KNN、曲率与梯度计算，从激光数据中筛选关键诱导点，并通过PCA降低特征相关性。
-          </p>
-        </div>
-      </div>
-      <div class="column is-one-third">
-        <div class="box">
-          <h3 class="title is-4">稀疏高斯过程</h3>
-          <p class="content">
-            采用诱导点稀疏高斯过程在稠密网格上预测高度、坡度与方差，为可通行性评分提供不确定性依据。
-          </p>
-        </div>
-      </div>
-      <div class="column is-one-third">
-        <div class="box">
-          <h3 class="title is-4">BGK融合</h3>
-          <p class="content">
-            时空贝叶斯高斯核平滑融合历史地图，引入时间衰减与方差加权，输出平滑且可信的可通行性热图。
-          </p>
-        </div>
-      </div>
-      <div class="column is-half">
-        <div class="box">
-          <h3 class="title is-4">规划与控制</h3>
-          <p class="content">
-            生成的可通行性代价图驱动A*搜索与MINCO轨迹优化，差速机器人在仿真与实地均实现平滑跟踪。
-          </p>
-        </div>
-      </div>
-      <div class="column is-half">
-        <div class="box">
-          <h3 class="title is-4">实时性能</h3>
-          <p class="content">
-            单次更新平均耗时33.84&nbsp;ms，显著低于直接堆叠多帧点云的方法，同时降低GPU显存占用，便于嵌入式部署。
-          </p>
+    <div class="columns is-centered">
+      <div class="column is-12">
+        <div class="content-card">
+          <h2 class="title is-3 has-text-centered">方法概览</h2>
+          <div class="columns is-multiline">
+            <div class="column is-one-third">
+              <div class="method-box">
+                <h3 class="title is-4">特征提取</h3>
+                <p class="content">
+                  利用 GPU 加速的 KNN、曲率与梯度计算，从激光数据中筛选关键诱导点，并通过 PCA 降低特征相关性。
+                </p>
+              </div>
+            </div>
+            <div class="column is-one-third">
+              <div class="method-box">
+                <h3 class="title is-4">稀疏高斯过程</h3>
+                <p class="content">
+                  采用诱导点稀疏高斯过程在稠密网格上预测高度、坡度与方差，为可通行性评分提供不确定性依据。
+                </p>
+              </div>
+            </div>
+            <div class="column is-one-third">
+              <div class="method-box">
+                <h3 class="title is-4">BGK 融合</h3>
+                <p class="content">
+                  时空贝叶斯高斯核平滑融合历史地图，引入时间衰减与方差加权，输出平滑且可信的可通行性热图。
+                </p>
+              </div>
+            </div>
+            <div class="column is-half">
+              <div class="method-box">
+                <h3 class="title is-4">规划与控制</h3>
+                <p class="content">
+                  生成的可通行性代价图驱动 A* 搜索与 MINCO 轨迹优化，差速机器人在仿真与实地均实现平滑跟踪。
+                </p>
+              </div>
+            </div>
+            <div class="column is-half">
+              <div class="method-box">
+                <h3 class="title is-4">实时性能</h3>
+                <p class="content">
+                  单次更新平均耗时 33.84&nbsp;ms，显著低于直接堆叠多帧点云的方法，同时降低 GPU 显存占用，便于嵌入式部署。
+                </p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -282,16 +316,18 @@
 <!-- Experiments -->
 <section class="section">
   <div class="container">
-    <h2 class="title is-3 has-text-centered">仿真与基准评测</h2>
     <div class="columns is-centered">
-      <div class="column is-three-quarters">
-        <div class="content">
-          <ul>
-            <li>覆盖丘陵、森林、废墟、公路、室内五类地形，合计2500组带遮挡与噪声的点云数据集。</li>
-            <li>在丘陵与森林场景中，FSGP-BGK相对基线SGP将平均误差分别降低52.5%与37.9%，并在所有地形上获得最低方差。</li>
-            <li>诱导点消融实验（50与500点）表明，即便诱导点更密集，BGK融合仍能显著提升精度与稳定性。</li>
-            <li>与高程图插值相比，平均运行时间从107.85&nbsp;ms降至33.84&nbsp;ms，同时输出更平滑的可通行性估计。</li>
-          </ul>
+      <div class="column is-10">
+        <div class="content-card">
+          <h2 class="title is-3 has-text-centered">仿真与基准评测</h2>
+          <div class="content">
+            <ul>
+              <li>覆盖丘陵、森林、废墟、公路、室内五类地形，合计 2500 组带遮挡与噪声的点云数据集。</li>
+              <li>在丘陵与森林场景中，FSGP-BGK 相对基线 SGP 将平均误差分别降低 52.5% 与 37.9%，并在所有地形上获得最低方差。</li>
+              <li>诱导点消融实验（50 与 500 点）表明，即便诱导点更密集，BGK 融合仍能显著提升精度与稳定性。</li>
+              <li>与高程图插值相比，平均运行时间从 107.85&nbsp;ms 降至 33.84&nbsp;ms，同时输出更平滑的可通行性估计。</li>
+            </ul>
+          </div>
         </div>
       </div>
     </div>
@@ -301,17 +337,19 @@
 <!-- Real-world -->
 <section class="section">
   <div class="container">
-    <h2 class="title is-3 has-text-centered">真实场景验证</h2>
     <div class="columns is-centered">
-      <div class="column is-three-quarters">
-        <div class="content">
-          <p>
-            我们将系统部署在装备Livox MID-360激光雷达、Intel Core i7计算单元与RTX 2060 GPU的Agilex Scout Mini上。
-            FSGP-BGK可在20&nbsp;Hz频率下实时输出可通行性地图，准确标记传统SGP忽略的小型障碍，同时显著降低显存占用。
-          </p>
-          <p>
-            在Isaac Sim环境中，结合FSGP-BGK生成的代价图，MINCO轨迹优化可获得连续平滑的导航路径，验证了方法对下游规划模块的兼容性。
-          </p>
+      <div class="column is-10">
+        <div class="content-card">
+          <h2 class="title is-3 has-text-centered">真实场景验证</h2>
+          <div class="content">
+            <p>
+              我们将系统部署在装备 Livox MID-360 激光雷达、Intel Core i7 计算单元与 RTX 2060 GPU 的 Agilex Scout Mini 上。
+              FSGP-BGK 可在 20&nbsp;Hz 频率下实时输出可通行性地图，准确标记传统 SGP 忽略的小型障碍，同时显著降低显存占用。
+            </p>
+            <p>
+              在 Isaac Sim 环境中，结合 FSGP-BGK 生成的代价图，MINCO 轨迹优化可获得连续平滑的导航路径，验证了方法对下游规划模块的兼容性。
+            </p>
+          </div>
         </div>
       </div>
     </div>
@@ -321,13 +359,15 @@
 <!-- Resources -->
 <section class="section">
   <div class="container">
-    <h2 class="title is-3 has-text-centered">资源与联系方式</h2>
     <div class="columns is-centered">
-      <div class="column is-half">
-        <div class="content has-text-centered">
-          <p><a href="./IROS2025-WEBSITE.pdf">论文下载（PDF）</a></p>
-          <p><a href="https://github.com/ZJU-FAST-Lab/FSGP_BGK">代码仓库</a></p>
-          <p>交流邮箱：<a href="mailto:xiagelearn@gmail.com">xiagelearn@gmail.com</a>，<a href="mailto:yanjunhi@zju.edu.cn">yanjunhi@zju.edu.cn</a></p>
+      <div class="column is-8">
+        <div class="content-card has-text-centered">
+          <h2 class="title is-3">资源与联系方式</h2>
+          <div class="resources-list">
+            <p><a href="./IROS2025-WEBSITE.pdf">论文下载（PDF）</a></p>
+            <p><a href="https://github.com/ZJU-FAST-Lab/FSGP_BGK">代码仓库</a></p>
+            <p>交流邮箱：<a href="mailto:xiagelearn@gmail.com">xiagelearn@gmail.com</a>，<a href="mailto:yanjunhi@zju.edu.cn">yanjunhi@zju.edu.cn</a></p>
+          </div>
         </div>
       </div>
     </div>
@@ -335,18 +375,20 @@
 </section>
 
 <section class="section" id="BibTeX">
-  <div class="container is-max-desktop content">
-    <h2 class="title">引用</h2>
-    <pre>
-      <code>
-@inproceedings{hou2025fsgpbgk,
+  <div class="container">
+    <div class="columns is-centered">
+      <div class="column is-8">
+        <div class="content-card">
+          <h2 class="title is-4">引用</h2>
+          <pre><code>@inproceedings{hou2025fsgpbgk,
   title={Real-time Spatial-temporal Traversability Assessment via Feature-based Sparse Gaussian Process},
   author={Hou, Zhenyu and Tan, Senming and Zhang, Zhihao and Xu, Long and Zhang, Mengke and He, Zhaoqi and Xu, Chao and Gao, Fei and Cao, Yanjun},
   booktitle={IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
   year={2025}
-}
-      </code>
-    </pre>
+}</code></pre>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 

@@ -1,151 +1,158 @@
 body {
   font-family: 'Noto Sans', sans-serif;
+  background: #f4f6fb;
+  color: #1f2a44;
 }
 
+.hero {
+  background: linear-gradient(160deg, #1e3c72, #2a5298);
+  color: #fff;
+  padding-top: 6rem;
+  padding-bottom: 4rem;
+  box-shadow: 0 12px 30px rgba(30, 60, 114, 0.25);
+}
 
-.footer .icon-link {
-    font-size: 25px;
-    color: #000;
+.hero a {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.publication-title {
+  font-family: 'Google Sans', sans-serif;
+  letter-spacing: 0.01em;
+  line-height: 1.2;
+}
+
+.is-size-5.publication-authors {
+  font-family: 'Google Sans', sans-serif;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.hero .button {
+  border-color: rgba(255, 255, 255, 0.65);
+}
+
+.hero .button.is-dark {
+  background: rgba(15, 23, 42, 0.9);
+  border: none;
+}
+
+.hero .button.is-link {
+  background: rgba(56, 189, 248, 0.92);
+  border: none;
+  color: #0b1e3c;
+}
+
+.hero .button.is-light {
+  background: rgba(255, 255, 255, 0.15);
+  color: #fff;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+.publication-links .button {
+  margin: 0.35rem 0.4rem;
+  min-width: 7.5rem;
 }
 
 .link-block a {
-    margin-top: 5px;
-    margin-bottom: 5px;
+  margin-top: 5px;
+  margin-bottom: 5px;
 }
 
-.dnerf {
-  font-variant: small-caps;
+.footer .icon-link {
+  font-size: 25px;
+  color: #000;
 }
-
-
-.teaser .hero-body {
-  padding-top: 0;
-  padding-bottom: 3rem;
-}
-
-.teaser {
-  font-family: 'Google Sans', sans-serif;
-}
-
-
-.publication-title {
-}
-
-.publication-banner {
-  max-height: parent;
-
-}
-
-.publication-banner video {
-  position: relative;
-  left: auto;
-  top: auto;
-  transform: none;
-  object-fit: fit;
-}
-
-.publication-header .hero-body {
-}
-
-.publication-title {
-    font-family: 'Google Sans', sans-serif;
-}
-
-.publication-authors {
-    font-family: 'Google Sans', sans-serif;
-}
-
-.publication-venue {
-    color: #555;
-    width: fit-content;
-    font-weight: bold;
-}
-
-.publication-awards {
-    color: #ff3860;
-    width: fit-content;
-    font-weight: bolder;
-}
-
 
 .publication-authors a {
-   color: hsl(204, 86%, 53%) !important;
+  color: hsl(204, 86%, 53%) !important;
 }
 
 .publication-authors a:hover {
-    text-decoration: underline;
+  text-decoration: underline;
 }
 
 .author-block {
   display: inline-block;
 }
 
-.publication-banner img {
+.content-card {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2.5rem 3rem;
+  box-shadow: 0 18px 45px rgba(15, 35, 95, 0.08);
+  margin-bottom: 2.5rem;
 }
 
-.publication-video {
-    position: relative;
-    width: 100%;
-    height: 0;
-    padding-bottom: 56.25%;
-
-    overflow: hidden;
-    border-radius: 10px !important;
+.content-card ul li {
+  margin-bottom: 0.75rem;
 }
 
-.publication-video iframe {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+.section {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
 }
 
-.publication-body img {
+.paper-figure {
+  text-align: center;
+  margin: 2.5rem auto;
 }
 
-.results-carousel {
-  overflow: hidden;
-}
-
-.results-carousel .item {
-  margin: 5px;
-  overflow: hidden;
-  border: 1px solid #bbb;
-  border-radius: 10px;
-  padding: 0;
-  font-size: 0;
-}
-
-.results-carousel video {
-  margin: 0;
-}
-
-
-.interpolation-panel {
-  background: #f5f5f5;
-  border-radius: 10px;
-}
-
-.interpolation-panel .interpolation-image {
+.paper-figure img {
   width: 100%;
-  border-radius: 5px;
+  max-width: 980px;
+  border-radius: 12px;
+  box-shadow: 0 18px 40px rgba(15, 23, 42, 0.16);
 }
 
-.interpolation-video-column {
+.paper-figure figcaption {
+  margin-top: 1rem;
+  color: #4a5674;
 }
 
-.interpolation-panel .slider {
-  margin: 0 !important;
+.method-box,
+.highlight-box {
+  background: linear-gradient(145deg, #ecf3ff, #ffffff);
+  border-radius: 14px;
+  padding: 1.8rem;
+  height: 100%;
+  box-shadow: inset 0 0 0 1px rgba(35, 71, 140, 0.08);
 }
 
-.interpolation-panel .slider {
-  margin: 0 !important;
+.method-box h3,
+.highlight-box h3 {
+  color: #1e3c72;
+  font-weight: 600;
 }
 
-#interpolation-image-wrapper {
-  width: 100%;
+.method-box p,
+.highlight-box p {
+  color: #33436d;
 }
-#interpolation-image-wrapper img {
-  border-radius: 5px;
+
+.resources-list p {
+  margin-bottom: 0.35rem;
+}
+
+.footer {
+  background: #0f172a;
+  color: rgba(255, 255, 255, 0.8);
+  padding-top: 3.5rem;
+}
+
+.footer a {
+  color: rgba(148, 197, 255, 0.95);
+}
+
+.footer .content img {
+  max-width: 180px;
+}
+
+.footer .column.has-background-link-light {
+  background: rgba(148, 163, 184, 0.15) !important;
+  border-radius: 12px;
+  padding: 1.2rem;
+}
+
+.teaser p {
+  color: #3b4c6b;
 }
