@@ -265,44 +265,80 @@
       <div class="column is-12">
         <div class="content-card">
           <h2 class="title is-3 has-text-centered">方法概览</h2>
-          <div class="columns is-multiline">
-            <div class="column is-one-third">
+
+          <!-- 特征提取部分 -->
+          <div class="columns is-centered">
+            <div class="column is-10">
               <div class="method-box">
                 <h3 class="title is-4">特征提取</h3>
                 <p class="content">
-                  利用 GPU 加速的 KNN、曲率与梯度计算，从激光数据中筛选关键诱导点，并通过 PCA 降低特征相关性。
+                  利用 GPU 加速的 KNN、曲率与梯度计算，从激光点云中筛选关键诱导点，并通过 PCA 降低特征相关性。我们从点云中提取局部曲率 κ 和梯度 g，识别具有高曲率或大梯度的特征点，这些点表示山脊、山谷和悬崖等关键地形结构。
                 </p>
+                <figure class="paper-figure">
+                  <img src="static/images/feature_01.png" alt="从点云中提取特征，显示曲率和梯度计算">
+                  <figcaption class="has-text-centered is-size-6">
+                    特征提取流程：GPU 加速计算激光点云的曲率和梯度特征，通过 PCA 降相关性以实现稳健的 SGP 训练。
+                  </figcaption>
+                </figure>
               </div>
             </div>
-            <div class="column is-one-third">
+          </div>
+
+          <!-- 稀疏高斯过程部分 -->
+          <div class="columns is-centered">
+            <div class="column is-10">
               <div class="method-box">
-                <h3 class="title is-4">稀疏高斯过程</h3>
+                <h3 class="title is-4">稀疏高斯过程 (SGP) 回归</h3>
                 <p class="content">
-                  采用诱导点稀疏高斯过程在稠密网格上预测高度、坡度与方差，为可通行性评分提供不确定性依据。
+                  采用诱导点稀疏高斯过程在稠密网格上预测高度、坡度与方差，为可通行性评分提供不确定性依据。SGP 模型使用诱导点 Z 降低计算复杂度，同时保持模型保真度。对于每个测试点 X*，我们使用反距离加权插值计算局部曲率和梯度，然后将这些特征输入训练好的 GP 模型以预测地形高度和不确定性。
                 </p>
+                <figure class="paper-figure">
+                  <img src="static/images/process_01.png" alt="带诱导点的稀疏高斯过程回归">
+                  <figcaption class="has-text-centered is-size-6">
+                    SGP 回归框架：诱导点实现地形高度、坡度和曲率估计的高效计算。
+                  </figcaption>
+                </figure>
               </div>
             </div>
-            <div class="column is-one-third">
+          </div>
+
+          <!-- BGK 融合部分 -->
+          <div class="columns is-centered">
+            <div class="column is-10">
               <div class="method-box">
-                <h3 class="title is-4">BGK 融合</h3>
+                <h3 class="title is-4">时空 BGK 融合</h3>
                 <p class="content">
-                  时空贝叶斯高斯核平滑融合历史地图，引入时间衰减与方差加权，输出平滑且可信的可通行性热图。
+                  时空贝叶斯高斯核平滑融合历史地图，引入时间衰减与方差加权，输出平滑且可信的可通行性热图。BGK 方法使用时间衰减权重 ω_t = exp(-λ(t-t₀)) 和基于不确定性的置信权重 ω_σ = 1/(σ²_{τ,t-1}+ε) 融合历史可通行性估计 M_{τ,t-1} 与初步预测 M_{τ,pre}。该方法有效整合多帧观测，同时保持计算效率。
                 </p>
+                <figure class="paper-figure">
+                  <img src="static/images/sma2ll_01.png" alt="历史和实时数据的贝叶斯高斯核融合">
+                  <figcaption class="has-text-centered is-size-6">
+                    BGK 融合机制：时间衰减和方差加权置信度加权实现历史可通行性地图与实时预测的平滑整合。
+                  </figcaption>
+                </figure>
               </div>
             </div>
-            <div class="column is-half">
+          </div>
+
+          <!-- 规划与控制部分 -->
+          <div class="columns is-centered">
+            <div class="column is-10">
               <div class="method-box">
                 <h3 class="title is-4">规划与控制</h3>
                 <p class="content">
-                  生成的可通行性代价图驱动 A* 搜索与 MINCO 轨迹优化，差速机器人在仿真与实地均实现平滑跟踪。
+                  生成的可通行性代价图驱动 A* 全局路径规划和 MINCO 轨迹优化；优化后的轨迹由差速控制器 (DDR-opt) 在仿真和实地均实现平滑跟踪。完整的自主导航框架将定位、建图、规划和控制集成为统一系统，实现实时地形感知导航。
                 </p>
               </div>
             </div>
-            <div class="column is-half">
+          </div>
+
+          <!-- 实时性能部分 -->
+          <div class="columns is-centered">
+            <div class="column is-10">
               <div class="method-box">
                 <h3 class="title is-4">实时性能</h3>
                 <p class="content">
-                  单次更新平均耗时 33.84&nbsp;ms，显著低于直接堆叠多帧点云的方法，同时降低 GPU 显存占用，便于嵌入式部署。
+                  单次更新平均耗时 33.84&nbsp;ms，显著低于直接堆叠多帧点云的方法，同时降低 GPU 显存占用，便于嵌入式部署。GPU 加速流程高效处理特征提取、SGP 推理和 BGK 融合，在真实机器人平台上实现 20 Hz 可通行性地图更新。
                 </p>
               </div>
             </div>
@@ -321,13 +357,40 @@
         <div class="content-card">
           <h2 class="title is-3 has-text-centered">仿真与基准评测</h2>
           <div class="content">
+            <p>
+              我们在五种地形类型（丘陵、森林、废墟、公路、室内）上进行了全面的定量评估，共 2500 个程序生成的点云。每个场景包含 15% 的意图遮挡以模拟真实激光雷达的局限性。我们的方法与经典 SGP 和高程图 (EM) 基线进行对比。
+            </p>
             <ul>
-              <li>覆盖丘陵、森林、废墟、公路、室内五类地形，合计 2500 组带遮挡与噪声的点云数据集。</li>
-              <li>在丘陵与森林场景中，FSGP-BGK 相对基线 SGP 将平均误差分别降低 52.5% 与 37.9%，并在所有地形上获得最低方差。</li>
-              <li>诱导点消融实验（50 与 500 点）表明，即便诱导点更密集，BGK 融合仍能显著提升精度与稳定性。</li>
-              <li>与高程图插值相比，平均运行时间从 107.85&nbsp;ms 降至 33.84&nbsp;ms，同时输出更平滑的可通行性估计。</li>
+              <li><strong>精度提升：</strong>在丘陵与森林场景中，FSGP-BGK 相对基线 SGP 将平均误差分别降低 52.5% 与 37.9%，并在所有地形上获得最低方差。</li>
+              <li><strong>可扩展性：</strong>诱导点消融实验（50 与 500 点）表明，即便诱导点更密集，BGK 融合仍能显著提升精度与稳定性，展现了不同计算预算下的鲁棒性。</li>
+              <li><strong>计算效率：</strong>与高程图插值相比，平均运行时间从 107.85&nbsp;ms 降至 33.84&nbsp;ms，同时输出更平滑的可通行性估计。</li>
+              <li><strong>时间一致性：</strong>平均误差随时间稳定下降，突出了通过整合历史观测实现的地形估计精度提升。</li>
             </ul>
           </div>
+
+          <!-- 实验结果可视化 -->
+          <figure class="paper-figure">
+            <img src="static/images/Experiment_01.png" alt="不同地形类型的实验结果，显示平均误差和方差">
+            <figcaption class="has-text-centered is-size-6">
+              五种地形类型的定量评估：FSGP-BGK 相比 SGP 和 FSGP 基线在所有地形上均实现最低的平均误差和方差。
+            </figcaption>
+          </figure>
+
+          <!-- 性能对比 -->
+          <figure class="paper-figure">
+            <img src="static/images/Compare_01.png" alt="FSGP-BGK 与基线方法的对比分析">
+            <figcaption class="has-text-centered is-size-6">
+              性能对比：FSGP-BGK 在不同诱导点配置下的多种地形场景中展现出优越的精度和稳定性。
+            </figcaption>
+          </figure>
+
+          <!-- 数值结果 -->
+          <figure class="paper-figure">
+            <img src="static/images/number_01.png" alt="数值性能指标和统计分析">
+            <figcaption class="has-text-centered is-size-6">
+              详细数值结果：FSGP-BGK、FSGP 和 SGP 在所有地形类别上的平均误差和方差指标，展现一致的性能提升。
+            </figcaption>
+          </figure>
         </div>
       </div>
     </div>
@@ -343,12 +406,48 @@
           <h2 class="title is-3 has-text-centered">真实场景验证</h2>
           <div class="content">
             <p>
-              我们将系统部署在装备 Livox MID-360 激光雷达、Intel Core i7 计算单元与 RTX 2060 GPU 的 Agilex Scout Mini 上。
-              FSGP-BGK 可在 20&nbsp;Hz 频率下实时输出可通行性地图，准确标记传统 SGP 忽略的小型障碍，同时显著降低显存占用。
+              我们将系统部署在装备 Livox MID-360 激光雷达、Intel Core i7 计算单元与 RTX 2060 GPU 的 Agilex Scout Mini 差速驱动平台上。
+              FSGP-BGK 可在 20&nbsp;Hz 频率下实时输出可通行性地图，准确标记传统 SGP 忽略的小型障碍，同时显著降低显存占用。机器人成功在复杂的室外非结构化环境中导航，实现实时地形感知路径规划和控制。
             </p>
             <p>
-              在 Isaac Sim 环境中，结合 FSGP-BGK 生成的代价图，MINCO 轨迹优化可获得连续平滑的导航路径，验证了方法对下游规划模块的兼容性。
+              在 Isaac Sim 环境中，结合 FSGP-BGK 生成的代价图，MINCO 轨迹优化可获得连续平滑的导航路径，验证了方法对下游规划模块的兼容性。该框架在多种地形类型和传感器条件下展现出稳健的性能。
             </p>
+          </div>
+
+          <!-- 机器人平台 -->
+          <figure class="paper-figure">
+            <img src="static/images/platform.png" alt="装备激光雷达和 GPU 计算单元的 Agilex Scout Mini 机器人平台">
+            <figcaption class="has-text-centered is-size-6">
+              机器人平台：Agilex Scout Mini 装备 Livox MID-360 激光雷达、Intel Core i7 和 RTX 2060 GPU，用于实时可通行性评估和自主导航。
+            </figcaption>
+          </figure>
+
+          <!-- 地形导航 -->
+          <figure class="paper-figure">
+            <img src="static/images/terrain_navigation.png" alt="使用可通行性感知路径规划的真实地形导航">
+            <figcaption class="has-text-centered is-size-6">
+              自主导航：机器人使用 FSGP-BGK 可通行性地图在非结构化室外环境中进行实时路径规划和障碍物规避。
+            </figcaption>
+          </figure>
+
+          <!-- 机器人部署 -->
+          <div class="columns is-multiline is-centered">
+            <div class="column is-half">
+              <figure class="paper-figure">
+                <img src="static/images/car1.png" alt="机器人在现场测试中的部署">
+                <figcaption class="has-text-centered is-size-6">
+                  现场部署：FSGP-BGK 在不平坦地形和自然障碍物中的真实世界测试。
+                </figcaption>
+              </figure>
+            </div>
+            <div class="column is-half">
+              <figure class="paper-figure">
+                <img src="static/images/car2.png" alt="机器人在复杂环境中的导航">
+                <figcaption class="has-text-centered is-size-6">
+                  自主导航：机器人使用实时可通行性评估成功穿越具有挑战性的地形。
+                </figcaption>
+              </figure>
+            </div>
           </div>
         </div>
       </div>

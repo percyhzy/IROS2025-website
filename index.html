@@ -264,45 +264,81 @@
       <div class="column is-12">
         <div class="content-card">
           <h2 class="title is-3 has-text-centered">Method Overview</h2>
-          <div class="columns is-multiline">
-            <div class="column is-one-third">
+
+          <!-- Feature Extraction Section -->
+          <div class="columns is-centered">
+            <div class="column is-10">
               <div class="method-box">
                 <h3 class="title is-4">Feature Extraction</h3>
                 <p class="content">
                   GPU-accelerated KNN, curvature, and gradient computation condense LiDAR point clouds into a sparse but informative inducing set.
-                  PCA decorrelates features before regression for stable learning.
+                  PCA decorrelates features before regression for stable learning. We extract local curvature κ and gradient g from point clouds, identifying feature points with high curvature or large gradients that indicate critical terrain structures such as ridges, valleys, and cliffs.
                 </p>
+                <figure class="paper-figure">
+                  <img src="static/images/feature_01.png" alt="Feature extraction from point clouds showing curvature and gradient computation">
+                  <figcaption class="has-text-centered is-size-6">
+                    Feature extraction pipeline: GPU-accelerated computation of curvature and gradient features from LiDAR point clouds, with PCA-based decorrelation for robust SGP training.
+                  </figcaption>
+                </figure>
               </div>
             </div>
-            <div class="column is-one-third">
+          </div>
+
+          <!-- Sparse GP Section -->
+          <div class="columns is-centered">
+            <div class="column is-10">
               <div class="method-box">
-                <h3 class="title is-4">Sparse GP Traversability</h3>
+                <h3 class="title is-4">Sparse Gaussian Process (SGP) Regression</h3>
                 <p class="content">
-                  An inducing-point SGP predicts elevation, slope magnitude, curvature, and variance on a dense grid, supporting uncertainty-aware traversability scoring.
+                  An inducing-point SGP predicts elevation, slope magnitude, curvature, and variance on a dense grid, supporting uncertainty-aware traversability scoring. The SGP model uses inducing points Z to reduce computational complexity while maintaining high accuracy. For each test point X*, we interpolate local curvature and gradient using inverse distance weighting, then feed these features into the trained GP model to predict terrain elevation and uncertainty.
                 </p>
+                <figure class="paper-figure">
+                  <img src="static/images/process_01.png" alt="Sparse Gaussian Process regression with inducing points">
+                  <figcaption class="has-text-centered is-size-6">
+                    SGP regression framework: Inducing points enable efficient computation of predictive mean and variance for terrain elevation, slope, and curvature estimation.
+                  </figcaption>
+                </figure>
               </div>
             </div>
-            <div class="column is-one-third">
+          </div>
+
+          <!-- BGK Fusion Section -->
+          <div class="columns is-centered">
+            <div class="column is-10">
               <div class="method-box">
-                <h3 class="title is-4">BGK Fusion</h3>
+                <h3 class="title is-4">Spatial-Temporal BGK Fusion</h3>
                 <p class="content">
-                  Bayesian Gaussian kernel smoothing injects temporal decay and variance-weighted confidence, yielding smooth, history-aware traversability maps ready for planning.
+                  Bayesian Gaussian kernel smoothing injects temporal decay and variance-weighted confidence, yielding smooth, history-aware traversability maps ready for planning. The BGK method fuses historical traversability estimates M_{τ,t-1} with preliminary predictions M_{τ,pre} using temporal decay weight ω_t = exp(-λ(t-t₀)) and uncertainty-based confidence weight ω_σ = 1/(σ²_{τ,t-1}+ε). This approach effectively integrates multi-frame observations while maintaining computational efficiency.
                 </p>
+                <figure class="paper-figure">
+                  <img src="static/images/sma2ll_01.png" alt="Bayesian Gaussian Kernel fusion of historical and real-time data">
+                  <figcaption class="has-text-centered is-size-6">
+                    BGK fusion mechanism: Temporal decay and variance-weighted confidence weighting enable smooth integration of historical traversability maps with real-time predictions.
+                  </figcaption>
+                </figure>
               </div>
             </div>
-            <div class="column is-half">
+          </div>
+
+          <!-- Planning & Control Section -->
+          <div class="columns is-centered">
+            <div class="column is-10">
               <div class="method-box">
                 <h3 class="title is-4">Planning &amp; Control</h3>
                 <p class="content">
-                  The traversability cost map feeds A* search and MINCO trajectory optimization; the resulting paths are tracked by a differential-drive controller in both simulation and field tests.
+                  The traversability cost map feeds A* for global path planning and MINCO for trajectory optimization; the resulting paths are tracked by a differential-drive controller (DDR-opt) in both simulation and field tests. The complete autonomous navigation framework integrates localization, mapping, planning, and control into a unified system for real-time terrain-aware navigation.
                 </p>
               </div>
             </div>
-            <div class="column is-half">
+          </div>
+
+          <!-- Real-time Performance Section -->
+          <div class="columns is-centered">
+            <div class="column is-10">
               <div class="method-box">
                 <h3 class="title is-4">Real-time Performance</h3>
                 <p class="content">
-                  FSGP-BGK attains 33.84&nbsp;ms average runtime per update with reduced GPU memory usage compared to direct multi-frame accumulation, enabling deployment on embedded GPUs.
+                  FSGP-BGK attains 33.84&nbsp;ms average runtime per update with reduced GPU memory usage compared to direct multi-frame accumulation, enabling deployment on embedded GPUs. The GPU-accelerated pipeline processes feature extraction, SGP inference, and BGK fusion efficiently, achieving 20 Hz traversability map updates on real robotic platforms.
                 </p>
               </div>
             </div>
@@ -321,13 +357,40 @@
         <div class="content-card">
           <h2 class="title is-3 has-text-centered">Simulation &amp; Benchmark Studies</h2>
           <div class="content">
+            <p>
+              We conducted comprehensive quantitative evaluations across five terrain types (Hilly, Forest, Ruin, Road, Indoor) with 2,500 procedurally generated point clouds. Each scenario includes 15% intentional occlusion to mimic real-world LiDAR limitations. Our method is benchmarked against classical SGP and elevation map (EM) baselines.
+            </p>
             <ul>
-              <li>Five terrain classes (Hilly, Forest, Ruin, Road, Indoor) with 2,500 procedurally generated point clouds evaluate robustness under occlusions and sensor noise.</li>
-              <li>FSGP-BGK lowers mean traversability error by 52.5% on hilly terrain and 37.9% on forest terrain relative to baseline SGP, while achieving the lowest variance across all categories.</li>
-              <li>Inducing-point ablations (50 vs. 500 points) reveal that BGK fusion sustains accuracy gains even with dense inducing sets.</li>
-              <li>Compared with elevation-map interpolation, FSGP-BGK achieves nearly three times faster runtime (33.84&nbsp;ms vs. 107.85&nbsp;ms) with reduced uncertainty.</li>
+              <li><strong>Accuracy Improvements:</strong> FSGP-BGK lowers mean traversability error by 52.5% on hilly terrain and 37.9% on forest terrain relative to baseline SGP, while achieving the lowest variance across all categories.</li>
+              <li><strong>Scalability:</strong> Inducing-point ablations (50 vs. 500 points) reveal that BGK fusion sustains accuracy gains even with dense inducing sets, demonstrating robustness across different computational budgets.</li>
+              <li><strong>Computational Efficiency:</strong> Compared with elevation-map interpolation, FSGP-BGK achieves nearly three times faster runtime (33.84&nbsp;ms vs. 107.85&nbsp;ms) with reduced uncertainty.</li>
+              <li><strong>Temporal Consistency:</strong> Mean error steadily decreases over time, highlighting enhanced terrain estimation accuracy through integration of historical observations.</li>
             </ul>
           </div>
+
+          <!-- Experimental Results Visualization -->
+          <figure class="paper-figure">
+            <img src="static/images/Experiment_01.png" alt="Experimental results showing mean error and variance across different terrain types">
+            <figcaption class="has-text-centered is-size-6">
+              Quantitative evaluation across five terrain types: FSGP-BGK consistently achieves the lowest mean error and variance compared to SGP and FSGP baselines.
+            </figcaption>
+          </figure>
+
+          <!-- Performance Comparison -->
+          <figure class="paper-figure">
+            <img src="static/images/Compare_01.png" alt="Comparative analysis of FSGP-BGK versus baseline methods">
+            <figcaption class="has-text-centered is-size-6">
+              Performance comparison: FSGP-BGK demonstrates superior accuracy and stability across diverse terrain scenarios with varying inducing point configurations.
+            </figcaption>
+          </figure>
+
+          <!-- Numerical Results -->
+          <figure class="paper-figure">
+            <img src="static/images/number_01.png" alt="Numerical performance metrics and statistical analysis">
+            <figcaption class="has-text-centered is-size-6">
+              Detailed numerical results: Mean error and variance metrics for FSGP-BGK, FSGP, and SGP across all terrain categories, demonstrating consistent improvements.
+            </figcaption>
+          </figure>
         </div>
       </div>
     </div>
@@ -343,12 +406,48 @@
           <h2 class="title is-3 has-text-centered">Real-world Validation</h2>
           <div class="content">
             <p>
-              We deploy FSGP-BGK on an Agilex Scout Mini equipped with a Livox MID-360 LiDAR, an Intel Core i7 compute unit, and an RTX 2060 GPU.
-              The system maintains 20&nbsp;Hz traversability updates and accurately highlights small obstacles that baseline SGP fails to capture, while consuming less GPU memory.
+              We deploy FSGP-BGK on an Agilex Scout Mini differential-drive platform equipped with a Livox MID-360 LiDAR, an Intel Core i7 compute unit, and an RTX 2060 GPU.
+              The system maintains 20&nbsp;Hz traversability updates and accurately highlights small obstacles that baseline SGP fails to capture, while consuming less GPU memory. The robot successfully navigates complex outdoor unstructured environments with real-time terrain-aware path planning and control.
             </p>
             <p>
-              In Isaac Sim, traversability-aware maps enable smooth trajectory optimization and tracking with MINCO, confirming that the cost map integrates seamlessly with downstream planning algorithms.
+              In Isaac Sim simulation, traversability-aware maps enable smooth trajectory optimization and tracking with MINCO, confirming that the cost map integrates seamlessly with downstream planning algorithms. The framework demonstrates robust performance across diverse terrain types and sensor conditions.
             </p>
+          </div>
+
+          <!-- Robot Platform -->
+          <figure class="paper-figure">
+            <img src="static/images/platform.png" alt="Agilex Scout Mini robot platform with LiDAR and GPU compute unit">
+            <figcaption class="has-text-centered is-size-6">
+              Robotic platform: Agilex Scout Mini equipped with Livox MID-360 LiDAR, Intel Core i7, and RTX 2060 GPU for real-time traversability assessment and autonomous navigation.
+            </figcaption>
+          </figure>
+
+          <!-- Terrain Navigation -->
+          <figure class="paper-figure">
+            <img src="static/images/terrain_navigation.png" alt="Real-world terrain navigation with traversability-aware path planning">
+            <figcaption class="has-text-centered is-size-6">
+              Autonomous navigation in complex terrain: The robot uses FSGP-BGK traversability maps for real-time path planning and obstacle avoidance in unstructured outdoor environments.
+            </figcaption>
+          </figure>
+
+          <!-- Robot Deployment -->
+          <div class="columns is-multiline is-centered">
+            <div class="column is-half">
+              <figure class="paper-figure">
+                <img src="static/images/car1.png" alt="Robot deployment in field testing">
+                <figcaption class="has-text-centered is-size-6">
+                  Field deployment: Real-world testing of FSGP-BGK on uneven terrain with natural obstacles and vegetation.
+                </figcaption>
+              </figure>
+            </div>
+            <div class="column is-half">
+              <figure class="paper-figure">
+                <img src="static/images/car2.png" alt="Robot navigation in complex environment">
+                <figcaption class="has-text-centered is-size-6">
+                  Autonomous navigation: The robot successfully traverses challenging terrain using real-time traversability assessment.
+                </figcaption>
+              </figure>
+            </div>
           </div>
         </div>
       </div>
